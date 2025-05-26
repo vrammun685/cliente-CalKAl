@@ -1,0 +1,56 @@
+.macro-bar {
+  width: 100%;
+  max-width: 500px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 1rem;
+  margin: 0 auto;
+}
+
+.macro-bar-header {
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.macro-bar-subtext {
+  font-size: clamp(1rem, 1.7vw, 1rem);
+  color: #666;
+}
+
+.macro-bar-progress .progress-bar {
+  min-height: 20px; /* tamaño mínimo seguro para que no desaparezca */
+  height: 1.5vw; /* o cualquier unidad relativa para hacerlo responsive */
+  max-height: 50px; /* opcional, para no crecer demasiado */
+  font-weight: 500;
+  font-size: clamp(0.75rem, 2vw, 0.95rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.progress.macro-bar-progress {
+  min-height: 20px;
+  height: 1.5vw;
+  max-height: 20px;
+  background-color: #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.titulo-macros{
+  font-size: clamp(1rem, 1.3vw, 1.5rem);
+  font-weight: bold;
+  padding: 0;
+}
+
+/* Responsive tweaks for small devices */
+@media (max-width: 576px) {
+  .macro-bar {
+    min-height: 60px;
+    padding: 0 0.5rem;
+  }
+
+  .macro-bar-header {
+    margin-bottom: 4px;
+  }
+}

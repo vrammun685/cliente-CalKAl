@@ -1,0 +1,15 @@
+.recharts-wrapper path:focus {
+  outline: none;
+}
+
+.grafico-calorias-wrapper {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  min-height: 230px; /* ajusta para móviles */
+}
+
+.calorias-label {
+  font-size: clamp(1.3rem, 2.5vw, 2em);
+}
+

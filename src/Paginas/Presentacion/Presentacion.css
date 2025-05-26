@@ -1,0 +1,196 @@
+/* General layout */
+.pagina-presentacion {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    position: relative; /* Necesario para el posicionamiento absoluto */
+    background-color: #040404;
+  }
+  
+  /* Sección de video */
+  .seccion-video {
+    position: relative;
+    height: 100vh;  /* Asegura que el video ocupe toda la pantalla */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Estilo del video de fondo */
+  .video-fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.5);
+    z-index: -1;  /* Mantiene el video en el fondo */
+  }
+
+  .video-fondo.active {
+    opacity: 1;
+    z-index: 0; /* Asegura que el activo quede por encima del otro */
+  }
+  
+  /* Selector de idioma */
+  .cambioIdioma {
+    position: absolute;
+    top: 20px;
+    right: 20px;  /* Lo coloca en la esquina superior derecha */
+    z-index: 10;  /* Asegura que el selector de idioma esté por encima del contenido */
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
+  
+  /* Estilo para la tarjeta de presentación */
+  .tarjeta-Presentacion {
+    background-color: transparent;
+    color: #E8E9EB;
+    padding: 2rem;
+    border-radius: 20px;
+    width: 100%;
+  }
+  
+  /* Estilo del logo */
+  .imagen-logo {
+    width: 15vh;
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+
+  .titulo{
+    font-size: 6.8rem;
+    animation: fadeInUp 1s ease-out forwards;
+  }
+
+  .subtitulo{
+    font-size: 2rem;
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  /* Botón de inicio */
+  .boton-inicio {
+    background-color: #4CAF87;
+    color: #E8E9EB;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 2.5rem;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  .boton-inicio:hover {
+    background-color: #E4B363;
+  }
+   
+  /* Sección de información */
+  .descripcion-app {
+    padding: 4rem 2rem;
+    background-color: #f5f5f5;
+    text-align: center;
+    color: #333;
+  }
+  
+  .titulo-seccion {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .tarjetas-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7rem;
+    justify-content: center;
+  }
+  
+  .tarjeta-info {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1 1 250px;
+    max-width: 300px;
+  }
+  
+  .boton-extra {
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    background-color: #4CAF87;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+  }
+  
+  .boton-extra:hover {
+    background-color: #E4B363;
+  }
+  
+  .iconos{
+    color: #4CAF87;
+    display: inline-block;
+    transition: color 0.5s ease;
+  }
+
+  .iconos:hover {
+    color: #E4B363;
+}
+
+.copiarEnlace {
+  color: rgb(0, 0, 0);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/*Animaciones*/
+  @keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+  @media (min-width: 768px) {
+    .tarjeta-Presentacion {
+      padding: 4rem;
+      border-radius: 50px;
+    }
+  }
+  
+  .titulo {
+    font-size: 2.8rem;
+  }
+  
+  @media (min-width: 768px) {
+    .titulo {
+      font-size: 4rem;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .titulo {
+      font-size: 6.8rem;
+    }
+  }
+  
+  .subtitulo {
+    font-size: 1.2rem;
+  }
+  
+  @media (min-width: 768px) {
+    .subtitulo {
+      font-size: 2rem;
+    }
+  }

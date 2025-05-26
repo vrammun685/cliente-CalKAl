@@ -1,0 +1,144 @@
+.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #08c758;
+  background: radial-gradient(circle,rgba(8, 199, 88, 1) 0%, rgba(76, 175, 135, 1) 48%, rgba(76, 175, 135, 1) 64%, rgba(53, 252, 133, 1) 100%);
+}
+
+.fila-abajo{
+    margin-top: 2.5vh;
+    padding-bottom: 2vh;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2vh 4vw;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.row-custom {
+  display: flex;
+  gap: 2vw;
+  width: 100%;
+}
+
+.top-row {
+  height: 65%;
+}
+
+.bottom-row {
+  height: 30%;
+}
+
+.card-equal {
+  flex: 1;
+  min-height: 24vw;
+  max-height: 20vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 1rem;
+  
+  background: white;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+}
+.centrado{
+    align-items: center;
+}
+
+.abajo{
+    min-height: 15vw;
+}
+
+.copiar-enlace {
+  color: rgb(255, 255, 255);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.card-con-video {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* llena el contenedor sin deformar */
+    transform: scale(1.1); /* hace un pequeño zoom sin pixelar */
+    transform-origin: center;
+    z-index: 0;
+    opacity: 1;
+    pointer-events: none;
+    filter: brightness(0.5);
+}
+
+.contenido-sobre-video {
+    position: relative;
+    z-index: 1;
+    padding: 1.5rem;
+    color: white; /* asegúrate que contraste con el video */
+}
+
+
+@media (max-width: 768px) {
+  .row-custom {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .top-row,
+  .bottom-row {
+    height: auto;
+  }
+
+  .card-equal {
+    width: 100%;
+    min-height: 100vw;
+  }
+}
+
+.card-con-gif {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2vw;
+  padding: 1rem;
+}
+
+.card-con-gif .contenido-lateral {
+  flex: 1;
+}
+
+.card-con-gif .gif-lateral {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-con-gif .gif-lateral img {
+  width: 50%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+
+@media (max-width: 1280px) {
+  .centrado{
+    min-height: 40vh;
+}
+    .abajo{
+        min-height: 20vh;
+    }
+}

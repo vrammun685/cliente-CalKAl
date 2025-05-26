@@ -1,0 +1,53 @@
+.perfil-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.perfil-imagen {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #4CAF87;
+  transition: border-color 0.3s ease;
+}
+
+.perfil-imagen:hover {
+  border-color: #E4B363;
+}
+
+.perfil-menu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: white;
+  border: 1.5px solid #4CAF87;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  min-width: 150px;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.perfil-menu a,
+.perfil-menu button {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #4CAF87;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.perfil-menu a:hover,
+.perfil-menu button:hover {
+  background-color: #4CAF87;
+  color: white;
+}
+/*Menu perfil*/

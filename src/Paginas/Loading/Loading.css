@@ -1,0 +1,13 @@
+.pantalla-carga {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #fff;
+}
+
+.pantalla-carga img {
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
+}

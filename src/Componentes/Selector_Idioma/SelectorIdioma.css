@@ -1,0 +1,28 @@
+.cambioIdioma-container {
+  width: 150px; /* Ajusta el ancho que prefieras */
+  max-width: 100%; /* Asegura que el ancho no se exceda del 100% del contenedor padre */
+  margin: 0 auto; /* Centra el contenedor si lo deseas */
+
+}
+.custom-select__control:hover {
+  border-color: #E4B363;
+}
+
+.custom-select__control:hover .custom-select__single-value {
+  color: #E4B363;
+}
+
+.custom-select__control:hover .custom-select__dropdown-indicator {
+  color: #E4B363;
+}
+
+@media (max-width: 480px) {
+  .cambioIdioma-container {
+    width: 50%;  /* Asegura que el contenedor ocupe solo el 100% */
+  }
+
+  .react-select__control {
+    width: 80%;   /* Ajusta el ancho del selector según el tamaño de la pantalla */
+    margin: 0 auto; /* Centra el selector en pantallas pequeñas */
+  }
+}

@@ -1,0 +1,26 @@
+.filtro-btn {
+  background-color: transparent !important; /* gris por defecto */
+  color: #4CAF87 !important;
+  border: 2px solid #4CAF87 !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover */
+.filtro-btn:hover {
+  background-color: #E4B363 !important; /* gris oscuro */
+  color: white !important; /* blanco */
+  border-color: #E4B363 !important;
+}
+
+/* Activo */
+.filtro-btn.active {
+  background-color: #4CAF87 !important; /* azul bootstrap primary */
+  color: white !important;
+  border-color: #4CAF87 !important;
+}
+
+/* Activo + hover */
+.filtro-btn.active:hover {
+  background-color: #E4B363 !important; /* azul primary más oscuro */
+  border-color: #E4B363 !important;
+}

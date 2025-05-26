@@ -1,0 +1,28 @@
+.formulario-perfil {
+  background-color: #fdfdfd;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.foto-perfil {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #dee2e6;
+}
+
+.seccion {
+  padding: 10px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.seccion:last-child {
+  border-right: none;
+}
+
+.botones {
+  display: flex;
+  justify-content: flex-end;
+}

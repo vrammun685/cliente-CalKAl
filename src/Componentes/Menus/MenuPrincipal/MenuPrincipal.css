@@ -1,0 +1,55 @@
+.imagen-logo-esquina {
+  width: 50px;
+}
+
+.nav-central {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.custom-link {
+  position: relative;
+  text-decoration: none;
+  color: #4CAF87 !important;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  padding: 5px 10px;
+}
+
+.custom-link:hover {
+  color: #E4B363 !important;
+}
+
+.custom-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  width: 100%;
+  height: 2px;
+  background-color: #E4B363;
+  transition: transform 0.3s ease;
+}
+
+.custom-link:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.custom-link {
+  position: relative; /* Necesario para ::after */
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (max-width: 991.98px) {
+  #navbarContent .navbar-nav {
+    display: flex !important;
+    flex-direction: row !important; /* o column si quieres vertical */
+    justify-content: center !important;
+    width: 100% !important;
+    gap: 1rem; /* separa los enlaces */
+  }
+}

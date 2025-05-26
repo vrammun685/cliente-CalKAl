@@ -1,0 +1,44 @@
+/* FormularioRegistro.css */
+
+.form-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.boton{
+    background-color: #4CAF87 !important; /* gris por defecto */
+    color: white !important;
+    border: 2px solid #4CAF87 !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.boton:hover{
+    background-color: #E4B363 !important; /* gris por defecto */
+    border: 2px solid #E4B363 !important;
+}
+
+@media (max-width: 576px) {
+  .form-card {
+    padding: 1rem;
+  }
+
+  .form-title {
+    font-size: 1.25rem;
+    text-align: center;
+  }
+
+  .form-section-title {
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+
+  .form-control {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+  }
+}

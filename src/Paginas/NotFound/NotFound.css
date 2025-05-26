@@ -1,0 +1,18 @@
+.texto-rojo{
+    color: #EF6461;
+}
+.boton-error{
+    background-color: #EF6461 !important;
+}
+
+.boton-error:hover{
+    background-color: #ae4342 !important;
+}
+
+.ola-error {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: -1; /* O un valor adecuado según tu layout */
+}
