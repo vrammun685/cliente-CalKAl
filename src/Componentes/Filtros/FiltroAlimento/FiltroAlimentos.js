@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function FiltroAlimentos({ filtro, setFiltro }) {
     return (
       <div name="filtro">

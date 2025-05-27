@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../../auth/axiosConfig';
+import { useState } from 'react';
+
 import ListaAlimentosAdmin from '../../Componentes/Listados/ListadosAdmin/ListadoAlimentosAdmin/ListadoAlimentosAdmin';
 
 export default function AdminPanel() {

@@ -3,7 +3,6 @@ import  FiltroAlimentos  from '../../Filtros/FiltroAlimento/FiltroAlimentos';
 import api from '../../../auth/axiosConfig';
 import ModalAnadirAlimento from '../../Modal/Modal_Alimento/ModalAlimento';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import api from '../../auth/axiosConfig';
 
 export default function ListaUsuariosAdmin({ idioma }) {

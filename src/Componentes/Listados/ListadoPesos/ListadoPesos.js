@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react';
+import { useState} from 'react';
 import "./ListadoPesos.css"
 export default function ListadoPesos({idioma, pesos, eliminar, editar}){
   const pesosOrdenados = [...pesos].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));

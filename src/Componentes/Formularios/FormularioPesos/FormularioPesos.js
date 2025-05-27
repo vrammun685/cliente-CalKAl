@@ -1,5 +1,5 @@
 import api from '../../../auth/axiosConfig';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function FormularioPeso({ pesos, setPesos, pesoEditar, setPesoEditar }) {
   const [fecha, setFecha] = useState('');

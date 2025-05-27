@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { CambioIdioma } from '../../Componentes/Selector_Idioma/SelectorIdiom';
 import FormularioCambiarContraseña  from '../../Componentes/Formularios/Formulario_Nueva_Contraseña/FormularioNuevaContraseña';
 

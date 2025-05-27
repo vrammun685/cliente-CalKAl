@@ -1,5 +1,4 @@
-import { useEffect, useState} from 'react';
-import axios from 'axios';
+import { useState} from 'react';
 import api from '../../../auth/axiosConfig';
 
 export default function FormularioPedirEmail({idioma}){

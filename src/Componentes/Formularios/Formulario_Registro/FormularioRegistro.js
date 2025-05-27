@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import Loading from '../../../Paginas/Loading/Loading';
 import api from '../../../auth/axiosConfig';
 

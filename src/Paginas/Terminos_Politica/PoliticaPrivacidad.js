@@ -1,5 +1,5 @@
 import { CambioIdioma } from '../../Componentes/Selector_Idioma/SelectorIdiom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function PoliticaPrivacidad(){
     const [idioma, setIdioma] = useState(localStorage.getItem('idioma') || 'es');

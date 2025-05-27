@@ -1,5 +1,5 @@
 import './Presentacion.css'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { CambioIdioma } from '../../Componentes/Selector_Idioma/SelectorIdiom';
 import { FondoCambiante } from '../../Componentes/Video_Fondo/Videofondo';
 import { useNavigate } from 'react-router-dom';

@@ -1,6 +1,6 @@
 import FormularioRegistro from '../../Componentes/Formularios/Formulario_Registro/FormularioRegistro';
 import { CambioIdioma } from "../../Componentes/Selector_Idioma/SelectorIdiom";
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Loading from '../Loading/Loading';
 
 export default function PaginaRegistro() {

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../../../auth/AuthContext';  // Cambia esto a donde tengas definido useAuth
 import "./FormularioLogin.css";
 import api from '../../../auth/axiosConfig';

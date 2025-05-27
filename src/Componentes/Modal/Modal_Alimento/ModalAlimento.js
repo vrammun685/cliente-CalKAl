@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../../../auth/axiosConfig'; // o simplemente 'axios'
 
 export default function ModalAnadirAlimento({ mostrar, onClose, onSubmit, alimento, idioma }) {

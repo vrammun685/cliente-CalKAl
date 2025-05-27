@@ -1,4 +1,3 @@
-import React from 'react';
 import './ListadoDiarios.css'; // Tu CSS personalizado
 
 export default function ListadoDiarios({ diarios, indiceActual, cambiarDia }) {

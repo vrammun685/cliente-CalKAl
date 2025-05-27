@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { CambioIdioma } from '../../Selector_Idioma/SelectorIdiom';
 import MenuPerfil from '../MenuPerfil/MenuPerfil';
 
-
-
 export default function MenuPrincipal({idioma, setIdioma, imagenPerfil}) {
   const cambiarIdioma = (nuevoIdioma) => {
     setIdioma(nuevoIdioma);

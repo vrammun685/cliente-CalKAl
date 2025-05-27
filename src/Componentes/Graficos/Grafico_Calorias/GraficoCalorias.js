@@ -1,4 +1,3 @@
-import React from 'react';
 import './GraficoCalorias.css';
 import { PieChart, Pie, Cell, ResponsiveContainer} from 'recharts';
 
