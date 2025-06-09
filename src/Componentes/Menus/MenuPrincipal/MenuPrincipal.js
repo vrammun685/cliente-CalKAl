@@ -54,12 +54,17 @@ export default function MenuPrincipal({idioma, setIdioma, imagenPerfil}) {
               {idioma === 'es' ? 'Pesos' : 'Weights'}
             </Link>
           </li>
+          <li className="nav-item">
+            <Link to="/recetas" className="nav-link fs-5 custom-link position-relative">
+              {idioma === 'es' ? 'Recetas' : 'Recipe'}
+            </Link>
+          </li>
         </ul>
 
         {/* LADO DERECHO: Idioma + Perfil solo en desktop */}
         <div className="d-none d-md-flex align-items-center gap-3">
           <CambioIdioma idioma={idioma} onChangeIdioma={cambiarIdioma} />
-          <MenuPerfil idioma={idioma} imagenPerfil={imagenPerfil} />
+          <MenuPerfil idioma={idioma} />
         </div>
       </div>
     </div>

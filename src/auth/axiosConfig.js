@@ -2,7 +2,7 @@ import axios from "axios";
 import { checkToken } from "./AuthService"; // ajusta ruta según tu proyecto
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://localhost:8000/",
+  baseURL: process.env.REACT_APP_API_URL,
   withCredentials: true,
 });
 

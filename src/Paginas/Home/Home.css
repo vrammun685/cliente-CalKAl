@@ -2,8 +2,12 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.fondo{
   background: #08c758;
   background: radial-gradient(circle,rgba(8, 199, 88, 1) 0%, rgba(76, 175, 135, 1) 48%, rgba(76, 175, 135, 1) 64%, rgba(53, 252, 133, 1) 100%);
+  min-height: 100vh;
 }
 
 .fila-abajo{

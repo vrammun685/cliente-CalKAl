@@ -13,7 +13,6 @@ export default function PaginaPerfil() {
     api.get("/perfil/")
       .then((res) => {
         setDatosUsuario(res.data.Datos_Usuario);
-        setImagenPerfil(res.data.imagen_perfil);
 
       })
       .catch((err) => {
@@ -26,11 +25,11 @@ export default function PaginaPerfil() {
   }
 
   return (
-    <div class="home">
-      <MenuPrincipal idioma={idioma} setIdioma={setIdioma} imagenPerfil={imagen_perfil} />
+    <div className="home">
+      <MenuPrincipal idioma={idioma} setIdioma={setIdioma} />
       
       {/* Depuración: mostrar todos los datos como JSON */}
-      <FormularioPerfil datosUsuarioInicial={datosUsuario} imagenPerfil={imagen_perfil} idioma={idioma}/>
+      <FormularioPerfil datosUsuarioInicial={datosUsuario} imagenPerfil={datosUsuario.imagen_Perfil} idioma={idioma}/>
     </div>
   );
 }

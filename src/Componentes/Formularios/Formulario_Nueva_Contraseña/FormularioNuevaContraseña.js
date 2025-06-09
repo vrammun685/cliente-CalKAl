@@ -28,7 +28,7 @@ export default function FormularioCambiarContraseña({idioma}){
     }
 
     try{
-      const response = await api.post(`CambiaContraseña/${uid}/${token}/`,
+      await api.post(`CambiaContraseña/${uid}/${token}/`,
         { password: formData.password }
       );
       redireccion('/login');

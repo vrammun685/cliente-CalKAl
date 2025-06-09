@@ -18,6 +18,8 @@ import PaginaPesos from '../Paginas/Pesos/Pesos';
 import PaginaDiarios from '../Paginas/Diarios/Diario';
 import PaginaPerfil from '../Paginas/Perfil/PaginaPerfil';
 import AdminPanel from '../Paginas/Pagina_Administracion/PanelAdmin';
+import PaginaRecetas from '../Paginas/PaginaRecetas/PaginaRecetas';
+import PaginaRecetasCrear from '../Paginas/PaginaRecetasCrear/PaginaRecetasCrear';
 
 
 export default function AppRouter() {
@@ -38,6 +40,8 @@ export default function AppRouter() {
         <Route path="/pesos" element={<RutaPrivada><PaginaPesos /></RutaPrivada>} />
         <Route path="/diarios" element={<RutaPrivada><PaginaDiarios /></RutaPrivada>} />
         <Route path="/perfil" element={<RutaPrivada><PaginaPerfil /></RutaPrivada>} />
+        <Route path="/recetas" element={<RutaPrivada><PaginaRecetas /></RutaPrivada>} />
+        <Route path="/recetas/crear/:id?" element={<RutaPrivada><PaginaRecetasCrear /></RutaPrivada>} />
         {/* Rutas privadas
         <Route path="/datos" element={<RutaPrivada><MostrarDatos /></RutaPrivada>} />
            */}

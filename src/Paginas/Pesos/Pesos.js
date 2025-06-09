@@ -4,7 +4,7 @@ import api from '../../auth/axiosConfig';
 import FiltroPesos from '../../Componentes/Filtros/Filtro_Pesos/FiltroPesos';
 import GraficoPesos from '../../Componentes/Graficos/Grafico_Pesos/Grafico_Pesos';
 import ListadoPesos from '../../Componentes/Listados/ListadoPesos/ListadoPesos';
-import FormularioPeso from '../../Componentes/Formularios/FormularioPesos/FormularioPesos';
+import ModalFormularioPeso from '../../Componentes/Modal/Modal_Peso/Modal_peso';
 import "./Pesos.css";
 
 export default function PaginaPesos() {
@@ -13,17 +13,24 @@ export default function PaginaPesos() {
   const [datosUsuario, setDatosUsuario] = useState(null);
   const [filtro, setFiltro] = useState('todo');
   const [pesoEditar, setPesoEditar] = useState(null);
-  
+  const [mostrarModalPeso, setMostrarModalPeso] = useState(false);
+
   const editarPeso = async (peso) => {
     try {
       const res = await api.get(`/pesos/?pk=${peso.id}`);
       const pesoCompleto = res.data;
 
       setPesoEditar(pesoCompleto);
+      setMostrarModalPeso(true);
     } catch (error) {
       console.error('Error al obtener el peso para editar:', error);
       alert('No se pudo cargar el peso');
     }
+  };
+
+  const crearPeso = () => {
+    setPesoEditar(null);
+    setMostrarModalPeso(true);
   };
 
   useEffect(() => {
@@ -51,7 +58,6 @@ export default function PaginaPesos() {
     }
   };
 
-  // Función para calcular la fecha límite según filtro
   const fechaLimite = useMemo(() => {
     const hoy = new Date();
     switch (filtro) {
@@ -68,23 +74,60 @@ export default function PaginaPesos() {
     }
   }, [filtro]);
 
-  // Filtrar pesos según fecha límite
   const pesosFiltrados = useMemo(() => {
     if (!fechaLimite) return pesos;
     return pesos.filter(peso => new Date(peso.fecha) >= fechaLimite);
   }, [pesos, fechaLimite]);
 
   return (
-    <div className='pesos'>
+    <div className='fondo'>
       <MenuPrincipal idioma={idioma} setIdioma={setIdioma} imagenPerfil={datosUsuario} />
-      
-      {/* Selector de filtro */}
-      <FiltroPesos filtro={filtro} setFiltro={setFiltro} idioma={idioma} />
+      <div className="content-wrapper">
+        {/* Filtro arriba, centrado */}
+        <div className="d-flex justify-content-center mb-3 ">
+          <FiltroPesos filtro={filtro} setFiltro={setFiltro} idioma={idioma} />
+        </div>
 
-      {/* Gráfico y listado con pesos filtrados */}
-      <GraficoPesos pesos={pesosFiltrados} />
-      <ListadoPesos idioma={idioma} pesos={pesosFiltrados} eliminar={eliminar} editar={editarPeso} />
-      <FormularioPeso pesos={pesos} setPesos={setPesos} pesoEditar={pesoEditar} setPesoEditar={setPesoEditar} />
+        {/* Fila con gráfico a la izquierda y listado a la derecha */}
+        <div className="row-custom">
+          {/* Columna izquierda: gráfico */}
+          <div className="card-equal" style={{ flex: 2 }}>
+            <GraficoPesos pesos={pesosFiltrados} />
+          </div>
+
+          {/* Columna derecha: listado + botón */}
+          <div
+            className="card-equal"
+            style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+          >
+            <ListadoPesos
+              idioma={idioma}
+              pesos={pesosFiltrados}
+              eliminar={eliminar}
+              editar={editarPeso}
+            />
+
+            <div className="d-flex justify-content-center mt-3">
+              <button className="btn btn-primary" onClick={crearPeso}>
+                {idioma === 'es' ? 'Nuevo Registro de Peso' : 'New Weight Record'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Modal con formulario para crear/editar peso */}
+      {mostrarModalPeso && (
+        <ModalFormularioPeso
+          
+          show={mostrarModalPeso}
+          cerrar={() => setMostrarModalPeso(false)}
+          pesos={pesos}
+          setPesos={setPesos}
+          pesoEditar={pesoEditar}
+          setPesoEditar={setPesoEditar}
+          idioma={idioma}
+        />
+      )}
     </div>
   );
 }

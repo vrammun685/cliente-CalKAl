@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react';
-import  FiltroAlimentos  from '../../Filtros/FiltroAlimento/FiltroAlimentos';
+import FiltroAlimentos from '../../Filtros/FiltroAlimento/FiltroAlimentos';
 import api from '../../../auth/axiosConfig';
-import ModalAnadirAlimento from '../../Modal/Modal_Alimento/ModalAlimento';
 
-export default function ListaAlimentos({ idioma, onAgregar  }) {
+export default function ListaAlimentosReceta({ idioma, onAlimentoSeleccionado }) {
   const [filtro, setFiltro] = useState('');
   const [alimentos, setAlimentos] = useState([]);
   const [cargando, setCargando] = useState(true);
-  const [alimentoModal, setAlimentoModal] = useState(null);
-  const [mostrarModal, setMostrarModal] = useState(false);
-  const [procesando, setProcesando] = useState(false);
 
   // Paginación
   const [paginaActual, setPaginaActual] = useState(1);
@@ -27,52 +23,22 @@ export default function ListaAlimentos({ idioma, onAgregar  }) {
       });
   }, []);
 
-  // Filtrado
   const alimentosFiltrados = alimentos.filter((alimento) =>
     (idioma === 'es' ? alimento.nombre_es : alimento.nombre_en)
       .toLowerCase()
       .includes(filtro.toLowerCase())
   );
 
-  // Resetear página cuando cambia filtro
   useEffect(() => {
     setPaginaActual(1);
   }, [filtro]);
 
-  // Calcular paginación sobre los filtrados
   const totalPaginas = Math.ceil(alimentosFiltrados.length / itemsPorPagina);
   const inicio = (paginaActual - 1) * itemsPorPagina;
   const fin = inicio + itemsPorPagina;
   const alimentosPagina = alimentosFiltrados.slice(inicio, fin);
 
- const abrirModal = (alimento) => {
-    setAlimentoModal(alimento);
-    setMostrarModal(true);
-  };
-
-  const cerrarModal = () => {
-    setMostrarModal(false);
-    setAlimentoModal(null);
-  };
-
-  const procesarAlimento = async (data) => {
-    if (procesando) return;
-
-    setProcesando(true);
-
-    try {
-      // aquí no añades localmente, solo notificas al padre que recargue
-      onAgregar(); // la función en el padre recarga todo desde backend
-      cerrarModal();
-    } catch (error) {
-      console.error('Error al procesar alimento:', error);
-    } finally {
-      setProcesando(false);
-    }
-  };
-
-
-  if (cargando) return <p>Cargando alimentos...</p>;
+  if (cargando) return <p>{idioma === 'es' ? 'Cargando alimentos...' : 'Loading foods...'}</p>;
 
   return (
     <div className="container mt-4">
@@ -99,8 +65,8 @@ export default function ListaAlimentos({ idioma, onAgregar  }) {
               </tr>
             </thead>
             <tbody>
-              {alimentosPagina.map((alimento, index) => (
-                <tr key={alimento.id || index}>
+              {alimentosPagina.map((alimento) => (
+                <tr key={alimento.id}>
                   <td>{idioma === 'es' ? alimento.nombre_es : alimento.nombre_en}</td>
                   <td>{alimento.calorias}</td>
                   <td>100 {alimento.medida}</td>
@@ -110,7 +76,7 @@ export default function ListaAlimentos({ idioma, onAgregar  }) {
                   <td>
                     <button
                       className="btn btn-dark btn-sm"
-                      onClick={() => abrirModal(alimento)}
+                      onClick={() => onAlimentoSeleccionado(alimento)}
                     >
                       {idioma === 'es' ? 'Añadir' : 'Add'}
                     </button>
@@ -120,7 +86,6 @@ export default function ListaAlimentos({ idioma, onAgregar  }) {
             </tbody>
           </table>
 
-          {/* Controles paginación */}
           <div className="d-flex justify-content-between align-items-center my-3">
             <button
               className="btn btn-secondary"
@@ -144,16 +109,6 @@ export default function ListaAlimentos({ idioma, onAgregar  }) {
           </div>
         </>
       )}
-
-      <ModalAnadirAlimento
-        mostrar={mostrarModal}
-        onClose={cerrarModal}
-        onSubmit={procesarAlimento}
-        alimento={alimentoModal}
-        idioma={idioma}
-        procesando={procesando}
-      />
-
     </div>
   );
 }

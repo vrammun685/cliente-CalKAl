@@ -34,10 +34,10 @@ export default function Home() {
  return (
     <>
     {datos && datos.diario && (
-    <div className="home position-relative z-1">
+    <div className="home position-relative z-1 fondo">
         
 
-        <MenuPrincipal idioma={idioma} setIdioma={setIdioma} imagenPerfil={datos.foto_perfil} />
+        <MenuPrincipal idioma={idioma} setIdioma={setIdioma} />
 
         <div className="content-wrapper">
             {/* Fila superior */}
@@ -65,7 +65,7 @@ export default function Home() {
                         Tu navegador no soporta video HTML5.
                     </video>
                     <div className="contenido-sobre-video">
-                        <h2>{idioma === 'es' ? 'API' : 'Use Our API'}</h2>
+                        <h2>{idioma === 'es' ? 'DESCUBRE NUESTRA API' : 'Use Our API'}</h2>
                         <p className='fs-4'>{idioma === 'es' ? 'Utiliza nuestra API para tus proyectos personales copiando el siguiente link' : 'Use our API for your personal projects by copying the following link'}</p>
                         <span className="copiar-enlace fs-4" onClick={() => copiarAlPortapapeles("http://127.0.0.1:8000/api/alimentos/", idioma)}>{idioma === 'es' ? 'Copiar enlace de la API' : 'Copy API link'}</span>
                     </div>
@@ -73,7 +73,7 @@ export default function Home() {
 
                 <div className="card-equal abajo card-con-gif">
                     <div className="contenido-lateral">
-                        <h5>{idioma === 'es' ? 'Sección inferior 2' : 'Bottom Section 2'}</h5>
+                        <h3>{idioma === 'es' ? 'NO SABES QUE COMER?' : 'Bottom Section 2'}</h3>
                         <p>{idioma === 'es' ? 'Otra sección para información adicional.' : 'Another section for extra info.'}</p>
                     </div>
                     <div className="gif-lateral">

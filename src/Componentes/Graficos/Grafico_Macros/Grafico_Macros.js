@@ -18,7 +18,7 @@ export function MacroBar({ nombreES, nombreEN, valor, maximo, color, idioma }) {
       <div className="macro-bar-header text-center">
         <p className="titulo-macros" style={{ color: `#${color}` }}>{idioma === 'es' ? nombreES : nombreEN}</p>
         <div className="macro-bar-subtext">
-          {valor}g / {maximo}g
+          {valor.toFixed(2)}g / {maximo.toFixed(2)}g
         </div>
       </div>
       <div className="progress macro-bar-progress">

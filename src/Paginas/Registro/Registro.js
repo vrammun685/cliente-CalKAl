@@ -2,6 +2,7 @@ import FormularioRegistro from '../../Componentes/Formularios/Formulario_Registr
 import { CambioIdioma } from "../../Componentes/Selector_Idioma/SelectorIdiom";
 import { useState, useEffect } from 'react';
 import Loading from '../Loading/Loading';
+import './Registro.css';
 
 export default function PaginaRegistro() {
   const [loading, setLoading] = useState(true);
@@ -30,8 +31,8 @@ export default function PaginaRegistro() {
   }
 
   return(
-    <div className='cartel-presentacion'>
-        <CambioIdioma idioma={idioma} onChangeIdioma={cambiarIdioma} className="cambioIdioma"/>
+    <div className='home'>
+        <CambioIdioma idioma={idioma} onChangeIdioma={cambiarIdioma} className="cambioIdioma bg-white"/>
         <FormularioRegistro idioma={idioma}/>
     </div>
   );
