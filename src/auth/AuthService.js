@@ -1,9 +1,10 @@
 
 import axios from 'axios';
 
+const BASE_URL = process.env.REACT_APP_API_URL;
 export const checkToken = async () => {
   try {
-    return await axios.get('http://localhost:8000/api/checktoken/', {
+    return await axios.get(`${BASE_URL}/checktoken/`, {
       withCredentials: true,
     });
   } catch (err) {
@@ -13,7 +14,7 @@ export const checkToken = async () => {
 };
 
 export const refreshToken = () => {
-  return axios.post("http://localhost:8000/api/refreshtoken/", null, {
+  return axios.post(`${BASE_URL}/refreshtoken/`, null, {
     withCredentials: true,
   });
 };
