@@ -26,21 +26,30 @@ export default function ModalFormularioPeso({ show, cerrar, pesos, setPesos, pes
     setErrors({});
   }, [pesoEditar, show]);
 
-  const handleImagenChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const validTypes = ["image/jpeg", "image/png"];
-      if (!validTypes.includes(file.type)) {
-        setErrors(prev => ({ ...prev, imagen: idioma === "es" ? "Solo imágenes PNG o JPG" : "Only PNG or JPG images" }));
-        setImagen(null);
-        setPreview(null);
-        return;
-      }
-      setImagen(file);
-      setPreview(URL.createObjectURL(file));
-      setErrors(prev => ({ ...prev, imagen: null }));
+const handleImagenChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const validTypes = ["image/jpeg", "image/png"];
+    const validExtensions = [".jpg", ".jpeg", ".png"];
+    const fileExtension = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
+
+    if (!validTypes.includes(file.type) || !validExtensions.includes(fileExtension)) {
+      setErrors(prev => ({
+        ...prev,
+        imagen: idioma === "es"
+          ? "Solo se permiten imágenes en formato PNG o JPG"
+          : "Only PNG or JPG image formats are allowed"
+      }));
+      setImagen(null);
+      setPreview(null);
+      return;
     }
-  };
+
+    setImagen(file);
+    setPreview(URL.createObjectURL(file));
+    setErrors(prev => ({ ...prev, imagen: null }));
+  }
+};
 
   const handleFechaChange = (e) => {
     const valor = e.target.value;
@@ -54,41 +63,52 @@ export default function ModalFormularioPeso({ show, cerrar, pesos, setPesos, pes
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const hoy = new Date().toISOString().split("T")[0];
-    if (fecha > hoy) {
-      setErrors(prev => ({ ...prev, fecha: idioma === "es" ? "La fecha no puede ser futura" : "Date cannot be in the future" }));
-      return;
+  // Validar si hay errores de imagen o fecha antes de continuar
+  if (errors.imagen) {
+    return;
+  }
+
+  const hoy = new Date().toISOString().split("T")[0];
+  if (fecha > hoy) {
+    setErrors(prev => ({ ...prev, fecha: idioma === "es" ? "La fecha no puede ser futura" : "Date cannot be in the future" }));
+    return;
+  }
+
+  // También podrías validar que el peso sea un número válido, por si acaso
+  if (!peso || isNaN(peso)) {
+    alert(idioma === "es" ? "Por favor, ingresa un peso válido" : "Please enter a valid weight");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("fecha", fecha);
+  formData.append("peso", peso);
+  if (imagen) formData.append("imagen", imagen);
+
+  try {
+    if (pesoEditar) {
+      await api.put(`/pesos/${pesoEditar.id}/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      alert("✅ Peso actualizado correctamente");
+      setPesoEditar(null);
+    } else {
+      await api.post("/pesos/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      alert("✅ Peso creado correctamente");
     }
 
-    const formData = new FormData();
-    formData.append("fecha", fecha);
-    formData.append("peso", peso);
-    if (imagen) formData.append("imagen", imagen);
-
-    try {
-      if (pesoEditar) {
-        await api.put(`/pesos/${pesoEditar.id}/`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        alert("✅ Peso actualizado correctamente");
-        setPesoEditar(null);
-      } else {
-        await api.post("/pesos/", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        alert("✅ Peso creado correctamente");
-      }
-
-      const res = await api.get("/pesos/");
-      setPesos(res.data.pesos);
-      handleCancelar();
-    } catch (error) {
-      console.error("Error:", error);
-      alert("❌ Hubo un error al guardar el registro");
-    }
-  };
+    const res = await api.get("/pesos/");
+    setPesos(res.data.pesos);
+    handleCancelar();
+  } catch (error) {
+    console.error("Error:", error);
+    alert("❌ Hubo un error al guardar el registro");
+  }
+};
 
   const handleCancelar = () => {
     setPesoEditar(null);
@@ -103,16 +123,21 @@ export default function ModalFormularioPeso({ show, cerrar, pesos, setPesos, pes
   if (!show) return null;
 
   return (
-    <>
-      <div className="modal-backdrop" onClick={handleCancelar}></div>
-      <div className="modal-container p-4 rounded shadow bg-white">
-        <h5 className="mb-3 text-center">
-          {pesoEditar
-            ? idioma === "es" ? "Editar Registro de Peso" : "Edit Weight Record"
-            : idioma === "es" ? "Nuevo Registro de Peso" : "New Weight Record"}
-        </h5>
+  <div className="modal fade show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+    <div className="modal-dialog">
+      <div className="modal-content">
+        <form onSubmit={handleSubmit}>
+          <div className="modal-header">
+            <h5 className="modal-title">
+              {pesoEditar
+                ? idioma === "es" ? "Editar Registro de Peso" : "Edit Weight Record"
+                : idioma === "es" ? "Nuevo Registro de Peso" : "New Weight Record"}
+            </h5>
+            <button type="button" className="btn-close" onClick={handleCancelar}></button>
+          </div>
 
-        <div className="text-center mb-3">
+          <div className="modal-body">
+            <div className="text-center mb-3">
           <img
             src={preview || imagenPorDefecto}
             alt="Preview"
@@ -121,7 +146,7 @@ export default function ModalFormularioPeso({ show, cerrar, pesos, setPesos, pes
           />
         </div>
 
-        <form onSubmit={handleSubmit}>
+        
           <div className="mb-2">
             <label className="form-label">{idioma === "es" ? "Fecha" : "Date"}</label>
             <input
@@ -156,19 +181,19 @@ export default function ModalFormularioPeso({ show, cerrar, pesos, setPesos, pes
             />
             {errors.imagen && <div className="invalid-feedback">{errors.imagen}</div>}
           </div>
+          </div>
 
-          <div className="d-flex justify-content-end gap-2">
+          <div className="modal-footer">
             <button type="button" className="btn btn-secondary" onClick={handleCancelar}>
               {idioma === "es" ? "Cancelar" : "Cancel"}
             </button>
             <button type="submit" className="btn btn-primary">
-              {pesoEditar
-                ? idioma === "es" ? "Guardar cambios" : "Save changes"
-                : idioma === "es" ? "Crear" : "Create"}
+              {pesoEditar ? (idioma === "es" ? "Guardar cambios" : "Save changes") : (idioma === "es" ? "Crear" : "Create")}
             </button>
           </div>
         </form>
       </div>
-    </>
-  );
+    </div>
+  </div>
+);
 }

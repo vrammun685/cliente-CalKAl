@@ -117,7 +117,7 @@ export default function PaginaPresentacion() {
                 ? 'Aqui puedes utilizar nuestra api con todos los alimentos que manejamos'
                 : 'Here you can use our API with all the foods we manage'}
             </p>
-            <span className="copiarEnlace fs-4" onClick={() => copiarAlPortapapeles("http://127.0.0.1:8000/api/alimentos/", idioma)}>API</span>
+            <span className="copiarEnlace fs-4" onClick={() => copiarAlPortapapeles(`${process.env.REACT_APP_API_URL}/alimentos/`, idioma)}>API</span>
           </div>
         </div>
         

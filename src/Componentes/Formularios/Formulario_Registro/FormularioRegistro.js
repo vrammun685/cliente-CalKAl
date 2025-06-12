@@ -7,7 +7,7 @@ export default function FormularioRegistro({ idioma }) {
   const [errors, setErrors] = useState({});
   const redireccion = useNavigate();
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [step, setStep] = useState(1); // Para controlar pasos del formulario
+  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -29,11 +29,33 @@ export default function FormularioRegistro({ idioma }) {
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
+
+    if (type === 'file' && name === 'imagen_Perfil') {
+      const file = files[0];
+      if (file) {
+        setFormData((prev) => ({
+          ...prev,
+          [name]: file,
+        }));
+      }
+      return;
+    }
+
+    if (name === 'confirmPassword') {
+      setConfirmPassword(value);
+      if (errors.confirm_password) {
+        setErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors.confirm_password;
+          return newErrors;
+        });
+      }
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked :
-              type === 'file' ? files[0] :
-              value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
 
     if (errors[name]) {
@@ -50,7 +72,10 @@ export default function FormularioRegistro({ idioma }) {
     try {
       const res = await api.get(`check-username/?username=${encodeURIComponent(formData.username)}`);
       if (res.data.exists) {
-        setErrors(prev => ({ ...prev, username: idioma === 'es' ? 'El nombre de usuario ya está en uso' : 'Username already taken' }));
+        setErrors((prev) => ({
+          ...prev,
+          username: idioma === 'es' ? 'El nombre de usuario ya está en uso' : 'Username already taken',
+        }));
       }
     } catch (error) {
       console.error('Error al validar username', error);
@@ -62,56 +87,67 @@ export default function FormularioRegistro({ idioma }) {
     try {
       const res = await api.get(`check-email/?email=${encodeURIComponent(formData.email)}`);
       if (res.data.exists) {
-        setErrors(prev => ({ ...prev, email: idioma === 'es' ? 'El email ya está registrado' : 'Email already registered' }));
+        setErrors((prev) => ({
+          ...prev,
+          email: idioma === 'es' ? 'El email ya está registrado' : 'Email already registered',
+        }));
       }
     } catch (error) {
       console.error('Error al validar email', error);
     }
   };
 
-  // Validar la primera parte del formulario antes de avanzar
   const validarPaso1 = async () => {
-    const newErrors = {};
+  const newErrors = {};
 
-    if (!formData.username) {
-      newErrors.username = idioma === 'es' ? 'Introduce un nombre de usuario' : 'Enter a username';
-    } else {
-      try {
-        const res = await api.get(`check-username?username=${encodeURIComponent(formData.username)}`);
-        if (res.data.exists) {
-          newErrors.username = idioma === 'es' ? 'El nombre de usuario ya está en uso' : 'Username already taken';
-        }
-      } catch (error) {
-        console.error('Error al validar username', error);
+  if (!formData.username) {
+    newErrors.username = idioma === 'es' ? 'Introduce un nombre de usuario' : 'Enter a username';
+  } else {
+    try {
+      const res = await api.get(`check-username/?username=${encodeURIComponent(formData.username)}`);
+      if (res.data.exists) {
+        newErrors.username = idioma === 'es' ? 'El nombre de usuario ya está en uso' : 'Username already taken';
       }
+    } catch (error) {
+      console.error('Error al validar username', error);
     }
+  }
 
-    if (!formData.email) {
-      newErrors.email = idioma === 'es' ? 'Introduce un email' : 'Enter your email';
-    } else {
-      try {
-        const res = await api.get(`check-email?email=${encodeURIComponent(formData.email)}`);
-        if (res.data.exists) {
-          newErrors.email = idioma === 'es' ? 'El email ya está registrado' : 'Email already registered';
-        }
-      } catch (error) {
-        console.error('Error al validar email', error);
+  if (!formData.email) {
+    newErrors.email = idioma === 'es' ? 'Introduce un email' : 'Enter your email';
+  } else {
+    try {
+      const res = await api.get(`check-email/?email=${encodeURIComponent(formData.email)}`);
+      if (res.data.exists) {
+        newErrors.email = idioma === 'es' ? 'El email ya está registrado' : 'Email already registered';
       }
+    } catch (error) {
+      console.error('Error al validar email', error);
     }
+  }
 
-    if (!formData.first_name) newErrors.first_name = idioma === 'es' ? 'Introduce el nombre' : 'Enter your first name';
-    if (!formData.last_name) newErrors.last_name = idioma === 'es' ? 'Introduce el apellido' : 'Enter your last name';
-    if (!formData.password || formData.password.length < 6)
-      newErrors.password = idioma === 'es' ? 'La contraseña debe tener al menos 6 caracteres' : 'Password must be at least 6 characters';
-    if (formData.password !== confirmPassword)
-      newErrors.confirm_password = idioma === 'es' ? 'Las contraseñas no coinciden' : 'Passwords do not match';
+  if (!formData.first_name)
+    newErrors.first_name = idioma === 'es' ? 'Introduce el nombre' : 'Enter your first name';
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  if (!formData.last_name)
+    newErrors.last_name = idioma === 'es' ? 'Introduce el apellido' : 'Enter your last name';
 
-  // Validar la segunda parte antes de enviar
-  const validarPaso2 = () => {
+  if (!formData.password || formData.password.length < 6)
+    newErrors.password = idioma === 'es'
+      ? 'La contraseña debe tener al menos 6 caracteres'
+      : 'Password must be at least 6 characters';
+
+  if (formData.password !== confirmPassword)
+    newErrors.confirm_password = idioma === 'es'
+      ? 'Las contraseñas no coinciden'
+      : 'Passwords do not match';
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
+
+  const validarPaso2 = async () => {
     const newErrors = {};
 
     if (!formData.altura || formData.altura <= 0) newErrors.altura = idioma === 'es' ? 'La altura debe ser un número positivo' : 'Height must be positive number';
@@ -122,16 +158,32 @@ export default function FormularioRegistro({ idioma }) {
     if (!formData.actividad) newErrors.actividad = idioma === 'es' ? 'Selecciona un nivel de actividad' : 'Select an activity level';
     if (!formData.accept_terms) newErrors.accept_terms = idioma === 'es' ? 'Acepta los términos' : 'Accept the terms';
 
+    if (formData.imagen_Perfil) {
+      const file = formData.imagen_Perfil;
+      const validTypes = ['image/jpeg', 'image/png'];
+      const validExtensions = ['.jpg', '.jpeg', '.png'];
+      const fileExtension = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
+
+      const isValidType = validTypes.includes(file.type);
+      const isValidExtension = validExtensions.includes(fileExtension);
+
+      if (!isValidType || !isValidExtension) {
+        newErrors.imagen_Perfil = idioma === 'es'
+          ? 'Solo se permiten imágenes JPG o PNG'
+          : 'Only JPG or PNG images are allowed';
+      }
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const siguientePaso = async () => {
     const pasoValido = await validarPaso1();
-      if (pasoValido) {
-        setStep(2);
-        setErrors({});
-      }
+    if (pasoValido) {
+      setStep(2);
+      setErrors({});
+    }
   };
 
   const anteriorPaso = () => {
@@ -141,7 +193,9 @@ export default function FormularioRegistro({ idioma }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validarPaso2()) return;
+
+    const pasoValido = await validarPaso2();
+    if (!pasoValido) return;
 
     setErrors({});
     setLoading(true);
@@ -153,7 +207,7 @@ export default function FormularioRegistro({ idioma }) {
     }
 
     try {
-      const response = await api.post('register/', data, {
+      await api.post('register/', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setLoading(false);
@@ -380,8 +434,13 @@ export default function FormularioRegistro({ idioma }) {
                     name="imagen_Perfil"
                     className="form-control"
                     onChange={handleChange}
-                    accept="image/*"
+                    accept=".jpg, .jpeg, .png"
                   />
+                  {errors.imagen_Perfil && (
+                    <p className="text-danger text-sm mt-1">
+                      {errors.imagen_Perfil}
+                    </p>
+                  )}
                 </div>
 
                 <div className="mb-3 form-check">

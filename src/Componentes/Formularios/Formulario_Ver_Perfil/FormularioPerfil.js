@@ -74,7 +74,20 @@ export default function FormularioPerfil({ datosUsuarioInicial, imagenPerfil, id
   };
 
   const handleGuardar = () => {
-    if (!validarFormulario()) return;
+    const nuevosErrores = generarMensajesDeError(datosUsuario);
+
+    // Verificar si hay error de imagen
+    if (nuevaImagen && !["image/png", "image/jpeg"].includes(nuevaImagen.type)) {
+      nuevosErrores.imagen = idioma === 'es'
+        ? 'Solo se permiten imágenes .png o .jpg'
+        : 'Only .png or .jpg images are allowed';
+    }
+
+    setErrors(nuevosErrores);
+
+    // Si hay errores, no enviar
+    if (Object.keys(nuevosErrores).length > 0) return;
+
     const formData = new FormData();
     for (const key in datosUsuario) {
       formData.append(key, datosUsuario[key]);
@@ -82,6 +95,7 @@ export default function FormularioPerfil({ datosUsuarioInicial, imagenPerfil, id
     if (nuevaImagen) {
       formData.append("imagen_Perfil", nuevaImagen);
     }
+
     api.put("/perfil/", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
