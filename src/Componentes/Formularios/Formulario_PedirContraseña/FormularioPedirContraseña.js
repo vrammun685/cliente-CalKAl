@@ -40,7 +40,7 @@ export default function FormularioPedirEmail({ idioma }) {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary w-100">
+        <button type="submit" className="boton w-100">
           {idioma === 'es' ? 'Solicitar correo' : 'Request email'}
         </button>
       </form>

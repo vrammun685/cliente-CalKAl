@@ -3,6 +3,7 @@ import { useAuth } from '../../auth/AuthContext';
 import ListaAlimentosAdmin from '../../Componentes/Listados/ListadosAdmin/ListadoAlimentosAdmin/ListadoAlimentosAdmin';
 import { useNavigate } from 'react-router-dom';
 import ModalCrearAlimento from '../../Componentes/Modal/ModalAlimentoAdminCrear/ModalAlimentoAdminCrear';
+import Loading from '../Loading/Loading';
 import api from '../../auth/axiosConfig';
 
 export default function AdminPanel() {
@@ -52,11 +53,11 @@ export default function AdminPanel() {
     setAlimentos(prev => prev.filter(alimento => alimento.id !== id));
   };
 
-  if (cargando) return <p>Cargando alimentos...</p>;
+  if (cargando) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+    <div className="fondo">
+      <div className="max-w-5xl mx-auto p-8 rounded-2xl shadow-lg">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Panel de Administración</h1>
         <button onClick={CerrarSesion}>Cerrar Sesión</button>
 

@@ -8,18 +8,9 @@ export default function CarruselDeTarjetas({ idioma }) {
   const navigate = useNavigate();
 
   const tarjetas = [
-    {
-      texto: idioma === "es" ? "Añade hoy tus Alimentos que vas a consumir" : "Log today's meals and food items",
-      ruta: "/Alimento/Añadir",
-    },
-    {
-      texto: idioma === "es" ? "Registra tus recetas favoritas ahora" : "Save your favorite recipes now",
-      ruta: "/Receta/Añadir",
-    },
-    {
-      texto: idioma === "es" ? "Activa las notificaciones para no perderte nada" : "Enable notifications so you don't miss a thing",
-      ruta: "/perfil",
-    },
+    { texto: idioma === "es" ? "Añade hoy tus Alimentos que vas a consumir" : "Log the foods you're going to eat today", ruta: "/diarios" },
+    { texto: idioma === "es" ? "Registra tus recetas favoritas ahora" : "Save your favorite recipes now", ruta: "/recetas/crear/:id?" },
+    { texto: idioma === "es" ? "Registra tu peso para ver tu progreso" : "Log your weight to track your progress", ruta: "/pesos" }
   ];
 
   useEffect(() => {

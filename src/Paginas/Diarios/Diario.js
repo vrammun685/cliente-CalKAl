@@ -4,6 +4,7 @@ import api from '../../auth/axiosConfig';
 import ListadoDiarios from '../../Componentes/Listados/ListadoDiarios/ListadoDiarios';
 import ListaAlimentos from '../../Componentes/Listados/ListadoAlimentos/ListadoAlimentos';
 import ListadoRecetasDiario from '../../Componentes/Listados/ListadoRecetasDiario/ListadoRecetasDiario';
+import Loading from '../Loading/Loading';
 
 export default function PaginaDiarios() {
   const [idioma, setIdioma] = useState(localStorage.getItem("idioma") || "es");
@@ -39,10 +40,10 @@ export default function PaginaDiarios() {
   // En vez de eso, simplemente recarga los diarios tras añadir alimento
  
 
-  if (cargando) return <p>Cargando diarios...</p>;
+  if (cargando) return <Loading />;
 
   return (
-    <div>
+    <div className='fondo'>
       <MenuPrincipal idioma={idioma} setIdioma={setIdioma} />
 
       <ListadoDiarios

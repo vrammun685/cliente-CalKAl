@@ -40,9 +40,10 @@ export default function FormularioCambiarContraseña({idioma}){
     }
   }
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="container mt-5" style={{ maxWidth: '400px' }}>
+    <div className="centrar-formulario">
+      <form onSubmit={handleSubmit} className="formulario-recuperacion">
         <h4 className="mb-3">{idioma === 'es' ? 'Establecer nueva Contraseña' : 'Set new Password'}</h4>
+
         <div className="mb-3">
           <input
             type="password"
@@ -55,7 +56,7 @@ export default function FormularioCambiarContraseña({idioma}){
           />
           {errors.password && <small className="text-danger">{errors.password[idioma]}</small>}
         </div>
-  
+
         <div className="mb-3">
           <input
             type="password"
@@ -68,8 +69,14 @@ export default function FormularioCambiarContraseña({idioma}){
           {errors.confirm_password && <small className="text-danger">{errors.confirm_password[idioma]}</small>}
         </div>
 
-        <button type="submit" className="btn btn-primary w-100 mb-3">
-          {loading ? (idioma === 'es' ? 'Cargando...' : 'Loading...') : idioma === 'es' ? 'Cambiar Contraseña' : 'Set Password'}
+        <button type="submit" className="boton w-100">
+          {loading
+            ? idioma === 'es'
+              ? 'Cargando...'
+              : 'Loading...'
+            : idioma === 'es'
+            ? 'Cambiar Contraseña'
+            : 'Set Password'}
         </button>
       </form>
     </div>

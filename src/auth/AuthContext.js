@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api from "./axiosConfig"
 import { checkToken,refreshToken } from "./AuthService";
 
 const AuthContext = createContext();
@@ -14,9 +14,7 @@ export function AuthProvider({ children }) {
 
   const logout = async () => {
     try {
-      await axios.post('http://localhost:8000/api/logout/', {}, {
-        withCredentials: true
-      });
+      await api.post('/logout/'); // usa el cliente con baseURL ya incluida
     } catch (error) {
       console.error("Error al cerrar sesión", error);
     } finally {

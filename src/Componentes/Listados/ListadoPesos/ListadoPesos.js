@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./ListadoPesos.css";
 
 export default function ListadoPesos({ idioma, pesos, eliminar, editar }) {
@@ -6,7 +6,7 @@ export default function ListadoPesos({ idioma, pesos, eliminar, editar }) {
   const [imagenSeleccionada, setImagenSeleccionada] = useState(null);
 
   const pesosOrdenados = [...pesos].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-  const pesosPorPagina = 5;
+  const pesosPorPagina = 4;
   const totalPaginas = Math.ceil(pesosOrdenados.length / pesosPorPagina);
 
   const pesosPaginados = pesosOrdenados.slice(
@@ -21,6 +21,13 @@ export default function ListadoPesos({ idioma, pesos, eliminar, editar }) {
       setPaginaActual(nuevaPagina);
     }
   };
+
+  useEffect(() => {
+    const totalPaginasActualizado = Math.ceil(pesosOrdenados.length / pesosPorPagina);
+    if (paginaActual > totalPaginasActualizado) {
+      setPaginaActual(totalPaginasActualizado || 1); // || 1 por si no queda ninguna página
+    }
+  }, [pesos, paginaActual]);
 
   return (
     <div className="container mt-4">
@@ -55,11 +62,11 @@ export default function ListadoPesos({ idioma, pesos, eliminar, editar }) {
                   )}
                 </td>
                 <td>
-                  <div className="d-flex justify-content-center">
-                    <button className="btn btn-sm btn-outline-primary me-2" onClick={() => editar(peso)}>
+                  <div className="d-flex justify-content-center gap-2">
+                    <button className="boton" onClick={() => editar(peso)}>
                       {idioma === 'es' ? "Editar" : "Update"}
                     </button>
-                    <button className="btn btn-sm btn-outline-danger" onClick={() => eliminar(peso.id)}>
+                    <button className="boton" onClick={() => eliminar(peso.id)}>
                       {idioma === 'es' ? "Eliminar" : "Delete"}
                     </button>
                   </div>

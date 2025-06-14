@@ -1,0 +1,25 @@
+
+
+.contenedor-flex {
+  display: flex;
+  gap: 2rem;
+  align-items: stretch; /* Muy importante para igualar alturas */
+}
+
+.Contenedorgrafico, .listadoPesos {
+  flex: 1; /* Que ocupen el mismo espacio horizontal */
+  background-color: white; /* Por estética */
+  padding: 1rem;
+  border-radius: 25px; 
+}
+
+
+@media (max-width: 768px) {
+  .contenedor-flex {
+    flex-direction: column;
+  }
+
+  .grafico, .listadoPesos {
+    width: 100%;
+  }
+}

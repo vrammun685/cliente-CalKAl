@@ -84,37 +84,36 @@ export default function PaginaPesos() {
       <MenuPrincipal idioma={idioma} setIdioma={setIdioma} imagenPerfil={datosUsuario} />
       <div className="content-wrapper">
         {/* Filtro arriba, centrado */}
-        <div className="d-flex justify-content-center mb-3 ">
+        <div className="Filtro">
           <FiltroPesos filtro={filtro} setFiltro={setFiltro} idioma={idioma} />
         </div>
 
         {/* Fila con gráfico a la izquierda y listado a la derecha */}
-        <div className="row-custom">
+       
           {/* Columna izquierda: gráfico */}
-          <div className="card-equal" style={{ flex: 2 }}>
-            <GraficoPesos pesos={pesosFiltrados} />
-          </div>
+          
+          <div className="contenedor-flex">
+            <div className="Contenedorgrafico">
+              <GraficoPesos pesos={pesosFiltrados} />
+            </div>
 
-          {/* Columna derecha: listado + botón */}
-          <div
-            className="card-equal"
-            style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
-          >
-            <ListadoPesos
-              idioma={idioma}
-              pesos={pesosFiltrados}
-              eliminar={eliminar}
-              editar={editarPeso}
-            />
+            <div className="listadoPesos">
+              <ListadoPesos
+                idioma={idioma}
+                pesos={pesosFiltrados}
+                eliminar={eliminar}
+                editar={editarPeso}
+              />
 
-            <div className="d-flex justify-content-center mt-3">
-              <button className="btn btn-primary" onClick={crearPeso}>
-                {idioma === 'es' ? 'Nuevo Registro de Peso' : 'New Weight Record'}
-              </button>
+              <div className="d-flex justify-content-center mt-3">
+                <button className="boton" onClick={crearPeso}>
+                  {idioma === 'es' ? 'Nuevo Registro de Peso' : 'New Weight Record'}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
       </div>
+
       {/* Modal con formulario para crear/editar peso */}
       {mostrarModalPeso && (
         <ModalFormularioPeso

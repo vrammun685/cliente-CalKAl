@@ -10,7 +10,7 @@ export default function PaginaEscribirNuevaContraseña(){
         localStorage.setItem('idioma', nuevoIdioma);
       };
       return(
-        <div>
+        <div className='fondo'>
             <CambioIdioma idioma={idioma} onChangeIdioma={cambiarIdioma} />
             <FormularioCambiarContraseña idioma={idioma} />
         </div>

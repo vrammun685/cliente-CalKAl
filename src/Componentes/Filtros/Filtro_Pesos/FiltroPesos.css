@@ -1,3 +1,16 @@
+.contenedor-filtro {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;  
+  background-color: white;
+  border-radius: 25px;    
+}
+
+
 .filtro-btn {
   background-color: transparent !important; /* gris por defecto */
   color: #4CAF87 !important;

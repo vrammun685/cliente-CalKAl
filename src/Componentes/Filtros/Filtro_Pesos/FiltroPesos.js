@@ -21,7 +21,7 @@ export default function FiltroPesos({ filtro, setFiltro, idioma }) {
   };
 
   return (
-    <div className="d-flex justify-content-center mb-4 flex-wrap gap-3 py-3">
+    <div className="contenedor-filtro">
       {opcionesFiltro.map(opcion => (
         <button
           key={opcion.id}

@@ -1,5 +1,5 @@
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Area } from 'recharts';
-
+import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
+import './Grafico_Pesos.css'
 export default function GraficoPesos({ pesos }) {
   const datosOrdenados = [...pesos].sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
 
@@ -17,8 +17,8 @@ export default function GraficoPesos({ pesos }) {
   }
 
   return (
-    <div>
-      <ResponsiveContainer width="99%" height={500}>
+    <div className='grafico'>
+      <ResponsiveContainer width="100%" height={500}>
         <LineChart  key={JSON.stringify(datosGrafico)} data={datosGrafico}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} horizontal={false} />
 
