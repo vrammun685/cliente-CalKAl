@@ -5,11 +5,13 @@ import { MacroBar } from '../../Componentes/Graficos/Grafico_Macros/Grafico_Macr
 import api from '../../auth/axiosConfig';
 import "./Home.css"
 import CarruselDeTarjetas from '../../Componentes/carrusel/Carrusel';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const [idioma, setIdioma] = useState(localStorage.getItem('idioma') || 'es');
   const [datos, setDatos] = useState({});
-  
+  const navigate = useNavigate();
+
   const copiarAlPortapapeles = async (enlace, idioma) => {
     try {
       await navigator.clipboard.writeText(enlace);
@@ -27,7 +29,7 @@ export default function Home() {
         console.log("Datos del usuario:", res.data);
       })
       .catch(err => {
-        console.error("Error al obtener datos del usuario:", err);
+        alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
       });
   }, []);
 
@@ -54,6 +56,7 @@ export default function Home() {
 
                 <div className="card-equal centrado">
                     <CarruselDeTarjetas idioma={idioma} />
+                    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="ola-svg" viewBox="0 0 1440 320"><path fill="#E4B363" fill-opacity="1" d="M0,96L48,85.3C96,75,192,53,288,64C384,75,480,117,576,165.3C672,213,768,267,864,282.7C960,299,1056,277,1152,272C1248,267,1344,277,1392,282.7L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
                 </div>
             </div>
 
@@ -78,7 +81,7 @@ export default function Home() {
 
                         <button
                         className="boton mt-3"
-                        onClick={() => window.location.href = "/ruta-a-la-pagina-de-recetas"} // <-- reemplaza por tu ruta real
+                        onClick={() => navigate('/recetas')}
                         >
                         {idioma === "es" ? "Ver recetas" : "View Recipes"}
                         </button>

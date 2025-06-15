@@ -46,17 +46,22 @@ export default function PaginaPesos() {
   }, []);
 
   const eliminar = (pesoID) => {
-    if (window.confirm("¿Estás seguro de que quieres eliminar este peso?")) {
-      api.delete(`/pesos/${pesoID}/`)
-        .then(res => {
-          console.log(res.data.mensaje);
-          setPesos(prev => prev.filter(p => p.id !== pesoID));
-        })
-        .catch(err => {
-          console.error("Error al eliminar el peso:", err);
-        });
-    }
-  };
+  if (pesos.length <= 1) {
+    alert("Debes tener al menos un peso registrado.");
+    return;
+  }
+
+  if (window.confirm("¿Estás seguro de que quieres eliminar este peso?")) {
+    api.delete(`/pesos/${pesoID}/`)
+      .then(res => {
+        console.log(res.data.mensaje);
+        setPesos(prev => prev.filter(p => p.id !== pesoID));
+      })
+      .catch(err => {
+        console.error("Error al eliminar el peso:", err);
+      });
+  }
+};
 
   const fechaLimite = useMemo(() => {
     const hoy = new Date();

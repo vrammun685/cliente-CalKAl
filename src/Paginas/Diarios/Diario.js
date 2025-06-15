@@ -5,6 +5,7 @@ import ListadoDiarios from '../../Componentes/Listados/ListadoDiarios/ListadoDia
 import ListaAlimentos from '../../Componentes/Listados/ListadoAlimentos/ListadoAlimentos';
 import ListadoRecetasDiario from '../../Componentes/Listados/ListadoRecetasDiario/ListadoRecetasDiario';
 import Loading from '../Loading/Loading';
+import './Diario.css';
 
 export default function PaginaDiarios() {
   const [idioma, setIdioma] = useState(localStorage.getItem("idioma") || "es");
@@ -23,7 +24,7 @@ export default function PaginaDiarios() {
         console.log("Datos recibidos:", res.data);
       })
       .catch((err) => {
-        console.error("Error al obtener los diarios del usuario:", err);
+        alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
         setCargando(false);
       });
   };
@@ -43,24 +44,38 @@ export default function PaginaDiarios() {
   if (cargando) return <Loading />;
 
   return (
-    <div className='fondo'>
+    <div className=" fondo">
       <MenuPrincipal idioma={idioma} setIdioma={setIdioma} />
 
-      <ListadoDiarios
-        diarios={diarios}
-        indiceActual={indiceActual}
-        cambiarDia={cambiarDia}
-        recargarDiarios={cargarDiarios}
-      />
-
-      {/*Seccion de alimentos*/}
-      <div className="row">
-        <div className="col-md-6">
-          {/* Pasamos la función que recarga el diario tras añadir */}
-          <ListaAlimentos idioma={idioma} onAgregar={cargarDiarios} />
+      <div className="contenido-principal">
+        {/* Tarjeta: Diarios */}
+        <div className="tarjeta-contenedor">
+          <div className="tarjeta">
+            <ListadoDiarios
+              diarios={diarios}
+              indiceActual={indiceActual}
+              cambiarDia={cambiarDia}
+              recargarDiarios={cargarDiarios}
+              idioma={idioma}
+            />
+          </div>
         </div>
-        <div className="col-md-6">
-          <ListadoRecetasDiario idioma={idioma} onAgregar={cargarDiarios}/>
+
+        {/* Tarjetas: Alimentos y Recetas */}
+        <div className="tarjetas-secundarias">
+          <div className="tarjeta">
+            <h5 className="titulo-tarjeta">
+              {idioma === 'es' ? 'Añadir Alimentos' : 'Add Foods'}
+            </h5>
+            <ListaAlimentos idioma={idioma} onAgregar={cargarDiarios} />
+          </div>
+
+          <div className="tarjeta">
+            <h5 className="titulo-tarjeta">
+              {idioma === 'es' ? 'Añadir Recetas' : 'Add Recipes'}
+            </h5>
+            <ListadoRecetasDiario idioma={idioma} onAgregar={cargarDiarios} />
+          </div>
         </div>
       </div>
     </div>

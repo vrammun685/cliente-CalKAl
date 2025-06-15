@@ -6,8 +6,8 @@ import ModalConfirmacion from '../../Modal/Modal_Confirmacion/ModalConfirmacion'
 
 export default function FormularioPerfil({ datosUsuarioInicial, imagenPerfil, idioma }) {
   const [datosUsuario, setDatosUsuario] = useState(datosUsuarioInicial);
-  const [nuevaImagen, setNuevaImagen] = useState(null);
-  const [preview, setPreview] = useState(imagenPerfil);
+  const [nuevaImagen, setImagen] = useState(null);
+  const [preview, setPreview] = useState(imagenPerfil || "/media/img/imagenSinPerfil.jpg");
   const [errors, setErrors] = useState({});
   const redireccion = useNavigate();
   const [mostrarModalConfirmacion, setMostrarModalConfirmacion] = useState(false);
@@ -26,82 +26,129 @@ export default function FormularioPerfil({ datosUsuarioInicial, imagenPerfil, id
     actividad: { es: "Nivel de actividad", en: "Activity level" },
   };
 
-  const generarMensajesDeError = (datos) => {
-    const nuevosErrores = {};
-    if (!datos.first_name) nuevosErrores.first_name = idioma === 'es' ? 'Campo requerido' : 'Required field';
-    if (!datos.last_name) nuevosErrores.last_name = idioma === 'es' ? 'Campo requerido' : 'Required field';
-    if (!datos.peso || datos.peso <= 0) nuevosErrores.peso = idioma === 'es' ? 'Peso debe ser mayor a 0' : 'Weight must be greater than 0';
-    if (!datos.altura || datos.altura <= 0) nuevosErrores.altura = idioma === 'es' ? 'Altura debe ser mayor a 0' : 'Height must be greater than 0';
-    if (!datos.edad || datos.edad < 12) nuevosErrores.edad = idioma === 'es' ? 'Edad mínima 12 años' : 'Minimum age is 12';
-    if (!datos.genero) nuevosErrores.genero = idioma === 'es' ? 'Selecciona tu género' : 'Select your gender';
-    if (!datos.objetivo) nuevosErrores.objetivo = idioma === 'es' ? 'Selecciona tu objetivo' : 'Select your goal';
-    if (!datos.actividad) nuevosErrores.actividad = idioma === 'es' ? 'Selecciona nivel de actividad' : 'Select activity level';
-    return nuevosErrores;
-  };
+  
 
-  useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      setErrors(generarMensajesDeError(datosUsuario));
+ const generarMensajesDeError = (datos) => {
+  const nuevosErrores = {};
+  if (!datos.peso || datos.peso <= 0) nuevosErrores.peso = idioma === 'es' ? 'El peso debe ser mayor a 0' : 'Weight must be greater than 0';
+  if (!datos.altura || datos.altura <= 0) nuevosErrores.altura = idioma === 'es' ? 'La altura debe ser mayor a 0' : 'Height must be greater than 0';
+  if (!datos.edad || datos.edad < 12) nuevosErrores.edad = idioma === 'es' ? 'Edad mínima 12 años' : 'Minimum age is 12';
+  if (!datos.genero) nuevosErrores.genero = idioma === 'es' ? 'Selecciona un género' : 'Select a gender';
+  if (!datos.objetivo) nuevosErrores.objetivo = idioma === 'es' ? 'Selecciona un objetivo' : 'Select a goal';
+  if (!datos.actividad) nuevosErrores.actividad = idioma === 'es' ? 'Selecciona un nivel de actividad' : 'Select an activity level';
+  return nuevosErrores;
+};
+
+useEffect(() => {
+  if (Object.keys(errors).length > 0) {
+    const erroresGenerados = generarMensajesDeError(datosUsuario);
+    const nuevosErrores = {};
+
+    for (const campo in errors) {
+      if (erroresGenerados[campo]) {
+        // Si es un campo que se puede traducir (peso, edad, etc.)
+        nuevosErrores[campo] = erroresGenerados[campo];
+      } else {
+        // Si es un error personalizado como imagen, lo conservamos
+        nuevosErrores[campo] = errors[campo];
+      }
     }
-  }, [idioma]);
+
+    setErrors(nuevosErrores);
+  }
+}, [idioma]);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setDatosUsuario({
-      ...datosUsuario,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
+  const { name, value, type, checked } = e.target;
 
-  const handleImagenChange = (e) => {
-    const file = e.target.files[0];
-    if (file && ["image/png", "image/jpeg"].includes(file.type)) {
-      setNuevaImagen(file);
-      setPreview(URL.createObjectURL(file));
-      setErrors(prev => ({ ...prev, imagen: null }));
-    } else {
+  setDatosUsuario(prev => ({
+    ...prev,
+    [name]: type === "checkbox" ? checked : value,
+  }));
+
+  if (errors[name]) {
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors[name];
+      return newErrors;
+    });
+  }
+};
+
+const handleImagenChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const validTypes = ["image/jpeg", "image/png"];
+    const validExtensions = [".jpg", ".jpeg", ".png"];
+    const fileExtension = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
+
+    if (!validTypes.includes(file.type) || !validExtensions.includes(fileExtension)) {
       setErrors(prev => ({
         ...prev,
-        imagen: idioma === 'es' ? 'Solo se permiten imágenes .png o .jpg' : 'Only .png or .jpg images are allowed',
+        imagen: idioma === "es"
+          ? "Solo se permiten imágenes en formato PNG o JPG"
+          : "Only PNG or JPG image formats are allowed"
       }));
+      return;
     }
-  };
+
+    setImagen(file);
+    setPreview(URL.createObjectURL(file));
+    setErrors(prev => ({ ...prev, imagen: null }));
+  }
+};
+
 
   const validarFormulario = () => {
-    const nuevosErrores = generarMensajesDeError(datosUsuario);
-    setErrors(nuevosErrores);
-    return Object.keys(nuevosErrores).length === 0;
+  const nuevosErrores = generarMensajesDeError(datosUsuario);
+
+  setErrors(prev => ({
+    ...prev,
+    ...nuevosErrores
+  }));
+
+  return {
+    ...errors,
+    ...nuevosErrores
   };
+};
 
-  const handleGuardar = () => {
-    const nuevosErrores = generarMensajesDeError(datosUsuario);
+  const handleGuardar = async () => {
+  const errores = validarFormulario();
 
-    // Verificar si hay error de imagen
-    if (nuevaImagen && !["image/png", "image/jpeg"].includes(nuevaImagen.type)) {
-      nuevosErrores.imagen = idioma === 'es'
-        ? 'Solo se permiten imágenes .png o .jpg'
-        : 'Only .png or .jpg images are allowed';
-    }
+  // Bloquear envío si hay errores (incluido el de imagen)
+  if (Object.keys(errores).length > 0) {
+    return;
+  }
 
-    setErrors(nuevosErrores);
+  // --- Opcional: asegurar explícitamente que no haya error de imagen ---
+  if (errores.imagen) {
+    return; // Por si acaso
+  }
 
-    // Si hay errores, no enviar
-    if (Object.keys(nuevosErrores).length > 0) return;
-
-    const formData = new FormData();
-    for (const key in datosUsuario) {
+  const formData = new FormData();
+  for (const key in datosUsuario) {
+    if (datosUsuario[key] !== undefined && datosUsuario[key] !== null) {
       formData.append(key, datosUsuario[key]);
     }
-    if (nuevaImagen) {
-      formData.append("imagen_Perfil", nuevaImagen);
-    }
+  }
+  if (nuevaImagen) {
+    formData.append("imagen_Perfil", nuevaImagen);
+  }
 
-    api.put("/perfil/", formData, {
+  try {
+    await api.put("/perfil/", formData, {
       headers: { "Content-Type": "multipart/form-data" },
-    })
-      .then(() => alert("✅ Cambios guardados correctamente"))
-      .catch(() => alert("❌ Error al guardar los cambios"));
-  };
+    });
+    redireccion('/home');
+  } catch (error) {
+    if (error.response?.data) {
+      setErrors(error.response.data);
+    } else {
+      alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
+    }
+  }
+};
 
   const handleSolicitarCambioPassword = async (e) => {
     e.preventDefault();
@@ -120,7 +167,7 @@ export default function FormularioPerfil({ datosUsuarioInicial, imagenPerfil, id
       .then(() => {
         redireccion('/login');
       })
-      .catch(() => alert("❌ Error al eliminar la cuenta"));
+      .catch(() => alert("Error al eliminar la cuenta"));
   };
 
   return (
@@ -132,13 +179,13 @@ export default function FormularioPerfil({ datosUsuarioInicial, imagenPerfil, id
               <img src={preview} alt="Perfil" className="foto-perfil mb-2" />
               <input
                 type="file"
-                accept="image/*"
+                accept=".png,.jpg,.jpeg"
                 onChange={handleImagenChange}
                 className="form-control mb-2"
               />
               {errors.imagen && <div className="text-danger">{errors.imagen}</div>}
             </div>
-            <h5>Datos personales</h5>
+            <h5>{idioma === 'es' ? 'Datos Personales' : 'Personal Data'}</h5>
 
             <label>{traducciones.username[idioma]}</label>
             <input className="form-control mb-2" value={datosUsuario.username} readOnly disabled />
@@ -168,8 +215,7 @@ export default function FormularioPerfil({ datosUsuarioInicial, imagenPerfil, id
 
         <div className="col-md-6">
           <div className="card p-3 shadow-sm">
-            <h5>Medidas y objetivos</h5>
-
+            <h5>{idioma === 'es' ? 'Medidas y objetivos' : 'Measurements and goals'}</h5>
             <label>{traducciones.peso[idioma]}</label>
             <input
               className="form-control mb-1"
@@ -261,14 +307,14 @@ export default function FormularioPerfil({ datosUsuarioInicial, imagenPerfil, id
       </div>
 
       <div className="botones mt-4 gap-2">
-        <button className="btn btn-primary" onClick={handleGuardar}>
+        <button className="boton" onClick={handleGuardar}>
           {idioma === 'es' ? 'Guardar cambios' : 'Save changes'}
         </button>
-        <button className="btn btn-warning" onClick={handleSolicitarCambioPassword}>
+        <button className="boton" onClick={handleSolicitarCambioPassword}>
           {idioma === 'es' ? 'Cambiar contraseña' : 'Change password'}
         </button>
         {errors.correo && <div className="alert alert-danger">{errors.correo}</div>}
-        <button className="btn btn-danger" onClick={() => setMostrarModalConfirmacion(true)}>
+        <button className="boton" onClick={() => setMostrarModalConfirmacion(true)}>
           {idioma === 'es' ? 'Eliminar cuenta' : 'Delete account'}
         </button>
       </div>

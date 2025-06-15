@@ -33,7 +33,7 @@ export default function PaginaRecetas() {
   };
 
   return (
-    <>
+    <div className='fondo'>
       <MenuPrincipal idioma={idioma} setIdioma={setIdioma} />
 
       <div className="container mt-4">
@@ -62,16 +62,19 @@ export default function PaginaRecetas() {
             <Link to="/recetas/crear/" style={{ textDecoration: 'none' }}>
               <div className="card text-center shadow-sm p-3" style={{ cursor: 'pointer' }}>
                 <div className="card-body">
-                  <h4 className="card-title">➕ Crear nueva receta</h4>
+                  <h4 className="card-title">➕ {idioma === 'es' ? 'Crear nueva receta' : 'Create new recipe'}</h4>
                   <p className="card-text text-muted">
-                    Agrega una nueva receta a tu colección personalizada.
+                    {idioma === 'es'
+                      ? 'Agrega una nueva receta a tu colección personalizada.'
+                      : 'Add a new recipe to your custom collection.'}
                   </p>
                 </div>
               </div>
             </Link>
           </div>
         </div>
+        
       </div>
-    </>
+    </div>
   );
 }

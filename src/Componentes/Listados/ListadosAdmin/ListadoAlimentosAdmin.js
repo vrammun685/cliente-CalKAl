@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import FiltroAlimentos from '../../../Filtros/FiltroAlimento/FiltroAlimentos';
+import FiltroAlimentos from '../../Filtros/FiltroAlimento/FiltroAlimentos';
 import { useNavigate } from 'react-router-dom';
-import ModalEditarAlimento from '../../../Modal/ModalAlimentoAdminEditar/ModalAlimentoAdminEdicion';
-import api from '../../../../auth/axiosConfig';
+import ModalEditarAlimento from '../../Modal/ModalAlimentoAdminEditar/ModalAlimentoAdminEdicion';
+import api from '../../../auth/axiosConfig';
 
 export default function ListaAlimentosAdmin({
   alimentos,
@@ -47,11 +47,11 @@ export default function ListaAlimentosAdmin({
         } else if (res.status === 403) {
           navigate('/login');
         } else {
-          console.error('No se pudo eliminar el alimento');
+          alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
         }
       })
       .catch(error => {
-        console.error('Error al eliminar:', error);
+        alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
         navigate('/login');
       });
   };
@@ -88,10 +88,10 @@ export default function ListaAlimentosAdmin({
                   <td>{alimento.carbohidratos}</td>
                   <td>{alimento.grasas}</td>
                   <td>
-                    <button className="btn btn-dark btn-sm me-2" onClick={() => abrirModal(alimento)}>
+                    <button className="btn boton btn-sm me-2" onClick={() => abrirModal(alimento)}>
                       Editar
                     </button>
-                    <button className="btn btn-dark btn-sm" onClick={() => eliminarAlimento(alimento.id)}>
+                    <button className="btn boton btn-sm" onClick={() => eliminarAlimento(alimento.id)}>
                       Eliminar
                     </button>
                   </td>

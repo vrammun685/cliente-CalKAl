@@ -41,14 +41,13 @@ export default function ModalAnadirAlimento({ mostrar, onClose, onSubmit, alimen
     };
 
     try {
-      await api.post('/diarios/crearAlimento/', payload); // envías al backend
-      onSubmit(payload); // si quieres actualizar el estado en el padre
-      onClose();         // cierras el modal
-      setCantidad('');   // limpias campos
+      await api.post('/diarios/crearAlimento/', payload); 
+      onSubmit(payload); 
+      onClose();  
+      setCantidad(''); 
       setParteDia('desayuno');
     } catch (error) {
-      console.error('Error al crear alimento consumido:', error);
-      // aquí puedes añadir lógica para mostrar error al usuario si quieres
+      alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
     }
   };
 
@@ -110,10 +109,10 @@ export default function ModalAnadirAlimento({ mostrar, onClose, onSubmit, alimen
             </div>
 
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={onClose}>
+              <button type="button" className="boton" onClick={onClose}>
                 {idioma === 'es' ? 'Cancelar' : 'Cancel'}
               </button>
-              <button type="submit" className="btn btn-primary">
+              <button type="submit" className="boton">
                 {idioma === 'es' ? 'Añadir' : 'Add'}
               </button>
             </div>

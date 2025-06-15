@@ -8,7 +8,7 @@ export default function DetalleReceta({ receta, onCerrar, idioma }) {
     if (receta?.id) {
       api.get(`/ingredientes/${receta.id}/`)
         .then(res => setIngredientes(res.data.ingredientes || []))
-        .catch(err => console.error("Error cargando ingredientes:", err));
+        .catch(err => alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde."));
     }
   }, [receta]);
 

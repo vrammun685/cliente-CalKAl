@@ -11,7 +11,7 @@ export default function PaginaEscribirNuevaContraseña(){
       };
       return(
         <div className='fondo'>
-            <CambioIdioma idioma={idioma} onChangeIdioma={cambiarIdioma} />
+            <CambioIdioma idioma={idioma} onChangeIdioma={cambiarIdioma} className="cambioIdioma bg-white"/>
             <FormularioCambiarContraseña idioma={idioma} />
         </div>
       )

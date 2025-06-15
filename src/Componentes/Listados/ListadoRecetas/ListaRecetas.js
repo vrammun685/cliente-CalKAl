@@ -28,7 +28,6 @@ export default function ListaRecetas({ recetas, eliminarReceta, onSeleccionarRec
 
   return (
     <div>
-      <h3>{idioma === 'es' ? 'Mis Recetas' : 'My Recipes'}</h3>
       <div className="table-responsive">
         <table className="table table-striped table-bordered">
           <thead>
@@ -47,19 +46,19 @@ export default function ListaRecetas({ recetas, eliminarReceta, onSeleccionarRec
                 <td>{receta.numeroPorciones}</td>
                 <td>
                   <button
-                    className="btn btn-primary btn-sm me-2"
+                    className="btn boton btn-sm me-2"
                     onClick={() => onSeleccionarReceta(receta)}
                   >
                     {idioma === 'es' ? 'Ver detalles' : 'View details'}
                   </button>
                   <button
-                    className="btn btn-warning btn-sm me-2"
+                    className="btn boton btn-sm me-2"
                     onClick={() => irAEditar(receta.id)}
                   >
                     {idioma === 'es' ? 'Editar' : 'Edit'}
                   </button>
                   <button
-                    className="btn btn-danger btn-sm"
+                    className="btn boton btn-sm"
                     onClick={() => confirmarEliminar(receta.id)}
                   >
                     {idioma === 'es' ? 'Eliminar' : 'Delete'}

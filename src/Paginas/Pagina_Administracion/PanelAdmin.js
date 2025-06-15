@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../auth/AuthContext';
-import ListaAlimentosAdmin from '../../Componentes/Listados/ListadosAdmin/ListadoAlimentosAdmin/ListadoAlimentosAdmin';
+import ListaAlimentosAdmin from '../../Componentes/Listados/ListadosAdmin/ListadoAlimentosAdmin';
 import { useNavigate } from 'react-router-dom';
 import ModalCrearAlimento from '../../Componentes/Modal/ModalAlimentoAdminCrear/ModalAlimentoAdminCrear';
 import Loading from '../Loading/Loading';
@@ -56,24 +56,30 @@ export default function AdminPanel() {
   if (cargando) return <Loading />;
 
   return (
-    <div className="fondo">
-      <div className="max-w-5xl mx-auto p-8 rounded-2xl shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Panel de Administración</h1>
-        <button onClick={CerrarSesion}>Cerrar Sesión</button>
+    <div className="fondo home">
+      <div className="container my-5">
+        <div className="card p-4 shadow rounded">
+          <ListaAlimentosAdmin
+            alimentos={alimentos}
+            actualizarAlimento={actualizarAlimentoEnLista}
+            eliminarAlimento={eliminarAlimentoDeLista}
+          />
 
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">Listado de Alimentos</h2>
-        <button
-          className="mb-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-          onClick={() => setMostrarCrearModal(true)}
-        >
-          Añadir nuevo alimento
-        </button>
-
-        <ListaAlimentosAdmin
-          alimentos={alimentos}
-          actualizarAlimento={actualizarAlimentoEnLista}
-          eliminarAlimento={eliminarAlimentoDeLista}
-        />
+          <div className="d-flex justify-content-center gap-3 mt-4">
+            <button
+              className="boton"
+              onClick={() => setMostrarCrearModal(true)}
+            >
+              Añadir nuevo alimento
+            </button>
+            <button
+              className="boton"
+              onClick={CerrarSesion}
+            >
+              Cerrar Sesión
+            </button>
+          </div>
+        </div>
       </div>
 
       {mostrarCrearModal && (

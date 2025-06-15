@@ -11,7 +11,7 @@ export default function ListadoRecetasDiario({ onAgregar, idioma }) {
   useEffect(() => {
     api.get('/recetas/')
       .then(res => setRecetas(res.data.Comidas || []))
-      .catch(err => console.error('Error al cargar recetas:', err));
+      .catch(err => alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde."));
   }, []);
 
   const handleAgregarClick = (receta) => {
@@ -32,8 +32,6 @@ export default function ListadoRecetasDiario({ onAgregar, idioma }) {
 
   return (
     <div>
-      <h3>{idioma === 'es' ? 'Añadir Recetas al Diario' : 'Add Recipes to Diary'}</h3>
-
       <div className="table-responsive">
         <table className="table table-striped table-bordered">
           <thead>
@@ -52,7 +50,7 @@ export default function ListadoRecetasDiario({ onAgregar, idioma }) {
                 <td>{receta.numeroPorciones}</td>
                 <td>
                   <button
-                    className="btn btn-success btn-sm"
+                    className="btn boton btn-sm"
                     onClick={() => handleAgregarClick(receta)}
                   >
                     {idioma === 'es' ? 'Añadir' : 'Add'}

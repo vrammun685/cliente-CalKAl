@@ -18,7 +18,7 @@ export default function ListaAlimentosReceta({ idioma, onAlimentoSeleccionado })
         setCargando(false);
       })
       .catch((err) => {
-        console.error('Error al cargar alimentos:', err);
+        alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
         setCargando(false);
       });
   }, []);
@@ -57,7 +57,6 @@ export default function ListaAlimentosReceta({ idioma, onAlimentoSeleccionado })
               <tr>
                 <th>{idioma === 'es' ? 'Nombre' : 'Name'}</th>
                 <th>{idioma === 'es' ? 'Calorías' : 'Calories'}</th>
-                <th>{idioma === 'es' ? 'Medida' : 'Measure'}</th>
                 <th>{idioma === 'es' ? 'Proteínas' : 'Proteins'}</th>
                 <th>{idioma === 'es' ? 'Carbohidratos' : 'Carbs'}</th>
                 <th>{idioma === 'es' ? 'Grasas' : 'Fats'}</th>
@@ -69,13 +68,12 @@ export default function ListaAlimentosReceta({ idioma, onAlimentoSeleccionado })
                 <tr key={alimento.id}>
                   <td>{idioma === 'es' ? alimento.nombre_es : alimento.nombre_en}</td>
                   <td>{alimento.calorias}</td>
-                  <td>100 {alimento.medida}</td>
                   <td>{alimento.proteinas}</td>
                   <td>{alimento.carbohidratos}</td>
                   <td>{alimento.grasas}</td>
                   <td>
                     <button
-                      className="btn btn-dark btn-sm"
+                      className="btn boton btn-sm"
                       onClick={() => onAlimentoSeleccionado(alimento)}
                     >
                       {idioma === 'es' ? 'Añadir' : 'Add'}

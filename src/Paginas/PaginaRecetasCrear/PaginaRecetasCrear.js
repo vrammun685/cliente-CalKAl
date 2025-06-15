@@ -4,6 +4,8 @@ import ModalAnadirAlimentoReceta from '../../Componentes/Modal/Modal_Alimento_Re
 import MenuPrincipal from '../../Componentes/Menus/MenuPrincipal/MenuPrincipal';
 import api from '../../auth/axiosConfig';
 import { useParams } from 'react-router-dom';
+import Loading from '../Loading/Loading';
+import { useNavigate } from 'react-router-dom';
 
 export default function PaginaRecetasCrear() {
   const [idioma, setIdioma] = useState(localStorage.getItem('idioma') || 'es');
@@ -14,6 +16,9 @@ export default function PaginaRecetasCrear() {
   const [nombreReceta, setNombreReceta] = useState('');
   const [numeroPorciones, setNumeroPorciones] = useState(1);
   const [cargando, setCargando] = useState(true);
+  const navigate = useNavigate();
+  const [errorIngredientes, setErrorIngredientes] = useState(null);
+  const [errorNombre, setErrorNombre] = useState(null);
 
   // Cargar receta si se está editando
   useEffect(() => {
@@ -62,12 +67,7 @@ export default function PaginaRecetasCrear() {
   };
 
   // Añadir ingrediente sin id temporal, solo alimento_id, cantidad y alimento
-  const añadirIngrediente = ({ alimento, cantidad }) => {
-    // Evitar duplicados por alimento_id (opcional, puedes modificar)
-    if (ingredientes.some(i => i.alimento_id === alimento.id)) {
-      alert(idioma === 'es' ? 'Ingrediente ya añadido.' : 'Ingredient already added.');
-      return;
-    }
+  const añadirIngrediente = ({ alimento, cantidad }) => {    
 
     const nuevo = {
       alimento_id: alimento.id,
@@ -98,10 +98,23 @@ export default function PaginaRecetasCrear() {
   );
 
   const enviarReceta = async () => {
-    if (!nombreReceta || ingredientes.length === 0) {
-      alert(idioma === 'es' ? 'Añade un nombre y al menos un ingrediente.' : 'Add a name and at least one ingredient.');
-      return;
+    let hayError = false;
+
+    if (!nombreReceta.trim()) {
+      setErrorNombre('sin_nombre');
+      hayError = true;
+    } else {
+      setErrorNombre('');
     }
+
+    if (ingredientes.length === 0) {
+      setErrorIngredientes('sin_ingredientes');
+      hayError = true;
+    } else {
+      setErrorIngredientes('');
+    }
+
+    if (hayError) return;
 
     const datos = {
       nombre: nombreReceta,
@@ -118,10 +131,10 @@ export default function PaginaRecetasCrear() {
         alert(idioma === 'es' ? 'Receta actualizada correctamente.' : 'Recipe updated successfully.');
       } else {
         await api.post('/recetas/crear/', datos);
-        alert(idioma === 'es' ? 'Receta creada correctamente.' : 'Recipe created successfully.');
         setIngredientes([]);
         setNombreReceta('');
       }
+      navigate('/recetas')
     } catch (error) {
       console.error('Error al guardar receta:', error);
       alert(idioma === 'es' ? 'Error al guardar la receta.' : 'Error saving the recipe.');
@@ -129,120 +142,133 @@ export default function PaginaRecetasCrear() {
   };
 
   if (cargando) {
-    return <div>{idioma === 'es' ? 'Cargando receta...' : 'Loading recipe...'}</div>;
+    return <Loading />;
   }
 
   return (
-    <>
-    <MenuPrincipal idioma={idioma} setIdioma={setIdioma} />
-    <div className="container mt-4">
-      <h2>{id ? (idioma === 'es' ? 'Editar Receta' : 'Edit Recipe') : (idioma === 'es' ? 'Crear Receta' : 'Create Recipe')}</h2>
+    <div className='fondo'>
+      <MenuPrincipal idioma={idioma} setIdioma={setIdioma} />
+      <div className="container mt-4">
 
-      <div className="row">
-        {/* Columna izquierda */}
-        <div className="col-md-6">
-          {/* Nombre y porciones */}
-          <div className="card mb-3">
-            <div className="card-body">
-              <label className="form-label">{idioma === 'es' ? 'Nombre de la receta' : 'Recipe Name'}</label>
-              <input
-                type="text"
-                className="form-control mb-3"
-                value={nombreReceta}
-                onChange={(e) => setNombreReceta(e.target.value)}
-              />
-              <label className="form-label">{idioma === 'es' ? 'Número de porciones' : 'Number of servings'}</label>
-              <input
-                type="number"
-                className="form-control"
-                min="1"
-                value={numeroPorciones}
-                onChange={(e) => setNumeroPorciones(parseInt(e.target.value) || 1)}
-              />
+        <div className="row">
+          {/* Columna izquierda */}
+          <div className="col-md-6">
+            {/* Nombre y porciones */}
+            <div className="card mb-3">
+              <div className="card-body">
+                <label className="form-label">{idioma === 'es' ? 'Nombre de la receta' : 'Recipe Name'}</label>
+                <input
+                  type="text"
+                  className="form-control mb-3"
+                  value={nombreReceta}
+                  onChange={(e) => setNombreReceta(e.target.value)}
+                />
+                {errorNombre && (
+                  <div className="text-danger small mt-1">
+                    {idioma === 'es'
+                      ? errorNombre === 'sin_nombre' && 'El nombre no puede estar vacío.'
+                      : errorNombre === 'sin_nombre' && 'Name cannot be empty.'}
+                  </div>
+                )}
+                <label className="form-label">{idioma === 'es' ? 'Número de porciones' : 'Number of servings'}</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  min="1"
+                  value={numeroPorciones}
+                  onChange={(e) => setNumeroPorciones(parseInt(e.target.value) || 1)}
+                />
+              </div>
             </div>
-          </div>
 
-          {/* Resumen nutricional */}
-          <div className="card mb-4">
-            <div className="card-header">
-              <h5>{idioma === 'es' ? 'Resumen Nutricional' : 'Nutritional Summary'}</h5>
+            {/* Resumen nutricional */}
+            <div className="card mb-4">
+              <div className="card-header">
+                <h5>{idioma === 'es' ? 'Resumen Nutricional' : 'Nutritional Summary'}</h5>
+              </div>
+              <div className="card-body">
+                <ul className="mb-0">
+                  <li>{idioma === 'es' ? 'Calorías' : 'Calories'}: {resumen.calorias.toFixed(1)}</li>
+                  <li>{idioma === 'es' ? 'Proteínas' : 'Proteins'}: {resumen.proteinas.toFixed(1)} g</li>
+                  <li>{idioma === 'es' ? 'Grasas' : 'Fats'}: {resumen.grasas.toFixed(1)} g</li>
+                  <li>{idioma === 'es' ? 'Carbohidratos' : 'Carbs'}: {resumen.carbohidratos.toFixed(1)} g</li>
+                </ul>
+                <button className="btn btn-success w-100 mt-4" onClick={enviarReceta}>
+                  {id ? (idioma === 'es' ? 'Actualizar receta' : 'Update Recipe') : (idioma === 'es' ? 'Crear receta' : 'Create Recipe')}
+                </button>
+              </div>
             </div>
-            <div className="card-body">
-              <ul className="mb-0">
-                <li>{idioma === 'es' ? 'Calorías' : 'Calories'}: {resumen.calorias.toFixed(1)}</li>
-                <li>{idioma === 'es' ? 'Proteínas' : 'Proteins'}: {resumen.proteinas.toFixed(1)} g</li>
-                <li>{idioma === 'es' ? 'Grasas' : 'Fats'}: {resumen.grasas.toFixed(1)} g</li>
-                <li>{idioma === 'es' ? 'Carbohidratos' : 'Carbs'}: {resumen.carbohidratos.toFixed(1)} g</li>
-              </ul>
-              <button className="btn btn-success w-100 mt-4" onClick={enviarReceta}>
-                {id ? (idioma === 'es' ? 'Actualizar receta' : 'Update Recipe') : (idioma === 'es' ? 'Crear receta' : 'Create Recipe')}
-              </button>
-            </div>
-          </div>
 
-          {/* Ingredientes añadidos */}
-          <div className="card">
-            <div className="card-header">
-              <h5>{idioma === 'es' ? 'Ingredientes añadidos' : 'Added Ingredients'}</h5>
-            </div>
-            <div className="card-body p-0">
-              {ingredientes.length === 0 ? (
-                <p className="p-3">{idioma === 'es' ? 'No hay ingredientes aún.' : 'No ingredients yet.'}</p>
-              ) : (
-                <table className="table mb-0">
-                  <thead>
-                    <tr>
-                      <th>{idioma === 'es' ? 'Nombre' : 'Name'}</th>
-                      <th>{idioma === 'es' ? 'Cantidad (g)' : 'Amount (g)'}</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ingredientes.map(item => (
-                      <tr key={item.alimento_id}>
-                        <td>{idioma === 'es' ? item.alimento.nombre_es : item.alimento.nombre_en}</td>
-                        <td>{item.cantidad}</td>
-                        <td>
-                          <button
-                            className="btn btn-danger btn-sm"
-                            onClick={() => eliminarIngrediente(item.alimento_id)}
-                          >
-                            {idioma === 'es' ? 'Eliminar' : 'Remove'}
-                          </button>
-                        </td>
+            {/* Ingredientes añadidos */}
+            <div className="card">
+              <div className="card-header">
+                <h5>{idioma === 'es' ? 'Ingredientes añadidos' : 'Added Ingredients'}</h5>
+              </div>
+              <div className="card-body p-0">
+                {ingredientes.length === 0 ? (
+                  <p className="p-3">{idioma === 'es' ? 'No hay ingredientes aún.' : 'No ingredients yet.'}</p>
+                ) : (
+                  <table className="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>{idioma === 'es' ? 'Nombre' : 'Name'}</th>
+                        <th>{idioma === 'es' ? 'Cantidad (g)' : 'Amount (g)'}</th>
+                        <th></th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
+                    </thead>
+                    <tbody>
+                      {ingredientes.map(item => (
+                        <tr key={item.alimento_id}>
+                          <td>{idioma === 'es' ? item.alimento.nombre_es : item.alimento.nombre_en}</td>
+                          <td>{item.cantidad}</td>
+                          <td>
+                            <button
+                              className="btn btn-danger btn-sm"
+                              onClick={() => eliminarIngrediente(item.alimento_id)}
+                            >
+                              {idioma === 'es' ? 'Eliminar' : 'Remove'}
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+                {errorIngredientes && (
+                  <div className="text-danger small px-3 pb-2">
+                    {idioma === 'es'
+                      ? errorIngredientes === 'sin_ingredientes' && 'Debes añadir al menos un ingrediente.'
+                      : errorIngredientes === 'sin_ingredientes' && 'You must add at least one ingredient.'}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Columna derecha: lista de alimentos */}
+          <div className="col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <ListaAlimentosReceta
+                  idioma={idioma}
+                  onAlimentoSeleccionado={abrirModal}
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Columna derecha: lista de alimentos */}
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <ListaAlimentosReceta
-                idioma={idioma}
-                onAlimentoSeleccionado={abrirModal}
-              />
-            </div>
-          </div>
-        </div>
+        {/* Modal para añadir ingrediente */}
+        <ModalAnadirAlimentoReceta
+          mostrar={mostrarModal}
+          onClose={cerrarModal}
+          onSubmit={({ cantidad }) =>
+            añadirIngrediente({ alimento: alimentoSeleccionado, cantidad })
+          }
+          alimento={alimentoSeleccionado}
+          idioma={idioma}
+        />
       </div>
-
-      {/* Modal para añadir ingrediente */}
-      <ModalAnadirAlimentoReceta
-        mostrar={mostrarModal}
-        onClose={cerrarModal}
-        onSubmit={({ cantidad }) =>
-          añadirIngrediente({ alimento: alimentoSeleccionado, cantidad })
-        }
-        alimento={alimentoSeleccionado}
-        idioma={idioma}
-      />
     </div>
-    </>
   );
 }

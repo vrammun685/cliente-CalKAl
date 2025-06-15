@@ -1,144 +1,100 @@
+import { useState } from 'react';
 import api from '../../../auth/axiosConfig';
-import { useState, useEffect } from 'react';
 
-export default function ModalFormularioPeso({ cerrar, pesos, setPesos, pesoEditar, setPesoEditar }) {
-  const [fecha, setFecha] = useState('');
-  const [peso, setPeso] = useState('');
-  const [imagen, setImagen] = useState(null);
-  const [preview, setPreview] = useState(null);
+export default function ModalCrearAlimento({ cerrar, agregarAlimentoALista }) {
+  const [formulario, setFormulario] = useState({
+    nombre_es: '',
+    nombre_en: '',
+    calorias: '',
+    medida: 'g',
+    proteinas: '',
+    carbohidratos: '',
+    grasas: '',
+  });
 
-  const imagenPorDefecto = "media/img/imagenSinPerfil.jpg";
-
-  useEffect(() => {
-    if (pesoEditar) {
-      setFecha(pesoEditar.fecha || '');
-      setPeso(pesoEditar.peso || '');
-      setPreview(pesoEditar.foto_pesaje || null);
-      setImagen(null);
-    } else {
-      setFecha('');
-      setPeso('');
-      setImagen(null);
-      setPreview(null);
-    }
-  }, [pesoEditar]);
-
-  const handleImagenChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImagen(file);
-      setPreview(URL.createObjectURL(file));
-    } else {
-      setImagen(null);
-      setPreview(null);
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormulario((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append('fecha', fecha);
-    formData.append('peso', peso);
-    if (imagen) {
-      formData.append('imagen', imagen);
-    }
+    const datos = {
+      ...formulario,
+      calorias: parseFloat(formulario.calorias),
+      proteinas: parseFloat(formulario.proteinas),
+      carbohidratos: parseFloat(formulario.carbohidratos),
+      grasas: parseFloat(formulario.grasas),
+    };
 
     try {
-      if (pesoEditar) {
-        await api.put(`/pesos/${pesoEditar.id}/`, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
-        alert('Peso actualizado correctamente');
-        setPesoEditar(null);
-      } else {
-        await api.post('/pesos/', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
-        alert('Peso creado correctamente');
+      const res = await api.post('paneladmin/alimentos/', datos);
+      if (res.status === 201) {
+        agregarAlimentoALista(res.data);
+        cerrar();
       }
-
-      const res = await api.get('/pesos/');
-      setPesos(res.data.pesos);
-
-      setFecha('');
-      setPeso('');
-      setImagen(null);
-      setPreview(null);
-      cerrar();
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Hubo un error');
+    } catch (err) {
+      console.error('Error al crear alimento:', err);
+      alert('Error al crear el alimento.');
     }
   };
 
   return (
-    <div className="modal fade show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-      <div className="modal-dialog modal-dialog-centered">
+    <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+      <div className="modal-dialog" role="document">
         <div className="modal-content">
           <form onSubmit={handleSubmit}>
             <div className="modal-header">
-              <h5 className="modal-title">
-                {pesoEditar ? 'Editar Registro de Peso' : 'Nuevo Registro de Peso'}
-              </h5>
-              <button type="button" className="close" onClick={cerrar}>
-                <span>&times;</span>
-              </button>
+              <h5 className="modal-title">Crear nuevo alimento</h5>
+              <button type="button" className="btn-close" onClick={cerrar}></button>
             </div>
 
             <div className="modal-body">
-              <div className="text-center mb-3">
-                <img
-                  src={preview || imagenPorDefecto}
-                  alt="Vista previa"
-                  className="img-fluid rounded"
-                  style={{ maxHeight: '250px', objectFit: 'cover' }}
-                />
-              </div>
+              {[ 
+                { name: 'nombre_es', label: 'Nombre (ES)' },
+                { name: 'nombre_en', label: 'Nombre (EN)' },
+                { name: 'calorias', label: 'Calorías', type: 'number' },
+                { name: 'proteinas', label: 'Proteínas', type: 'number' },
+                { name: 'carbohidratos', label: 'Carbohidratos', type: 'number' },
+                { name: 'grasas', label: 'Grasas', type: 'number' },
+              ].map(({ name, label, type = 'text' }) => (
+                <div className="form-group" key={name}>
+                  <label>{label}</label>
+                  <input
+                    name={name}
+                    type={type}
+                    step="any"
+                    className="form-control"
+                    value={formulario[name]}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              ))}
 
               <div className="form-group">
-                <label>Fecha:</label>
-                <input
-                  type="date"
-                  value={fecha}
-                  onChange={e => setFecha(e.target.value)}
+                <label>Medida</label>
+                <select
+                  name="medida"
                   className="form-control"
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Peso (kg):</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={peso}
-                  onChange={e => setPeso(e.target.value)}
-                  className="form-control"
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Imagen:</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImagenChange}
-                  className="form-control"
-                />
+                  value={formulario.medida}
+                  onChange={handleChange}
+                >
+                  <option value="g">g</option>
+                  <option value="ml">ml</option>
+                </select>
               </div>
             </div>
 
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={() => {
-                setPesoEditar(null);
-                cerrar();
-              }}>
+              <button type="button" className="boton" onClick={cerrar}>
                 Cancelar
               </button>
-              <button type="submit" className="btn btn-primary">
-                {pesoEditar ? 'Guardar Cambios' : 'Crear'}
+              <button type="submit" className="boton">
+                Crear
               </button>
             </div>
           </form>

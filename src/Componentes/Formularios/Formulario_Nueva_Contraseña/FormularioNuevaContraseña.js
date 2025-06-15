@@ -39,46 +39,54 @@ export default function FormularioCambiarContraseña({idioma}){
       }
     }
   }
-  return (
-    <div className="centrar-formulario">
-      <form onSubmit={handleSubmit} className="formulario-recuperacion">
-        <h4 className="mb-3">{idioma === 'es' ? 'Establecer nueva Contraseña' : 'Set new Password'}</h4>
+return (
+    <div className="d-flex justify-content-center align-items-center min-vh-100">
+      <div className="card shadow p-4" style={{ maxWidth: '400px', width: '100%' }}>
+        <form onSubmit={handleSubmit}>
+          <h4 className="text-center mb-4">
+            {idioma === 'es' ? 'Establecer nueva Contraseña' : 'Set new Password'}
+          </h4>
 
-        <div className="mb-3">
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder={idioma === 'es' ? 'Contraseña' : 'Password'}
-            required
-          />
-          {errors.password && <small className="text-danger">{errors.password[idioma]}</small>}
-        </div>
+          <div className="mb-3">
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder={idioma === 'es' ? 'Contraseña' : 'Password'}
+              required
+            />
+            {errors.password && (
+              <small className="text-danger">{errors.password[idioma]}</small>
+            )}
+          </div>
 
-        <div className="mb-3">
-          <input
-            type="password"
-            name="confirm_password"
-            className="form-control"
-            onChange={handleChange}
-            placeholder={idioma === 'es' ? 'Confirmar Contraseña' : 'Confirm Password'}
-            required
-          />
-          {errors.confirm_password && <small className="text-danger">{errors.confirm_password[idioma]}</small>}
-        </div>
+          <div className="mb-3">
+            <input
+              type="password"
+              name="confirm_password"
+              className="form-control"
+              onChange={handleChange}
+              placeholder={idioma === 'es' ? 'Confirmar Contraseña' : 'Confirm Password'}
+              required
+            />
+            {errors.confirm_password && (
+              <small className="text-danger">{errors.confirm_password[idioma]}</small>
+            )}
+          </div>
 
-        <button type="submit" className="boton w-100">
-          {loading
-            ? idioma === 'es'
-              ? 'Cargando...'
-              : 'Loading...'
-            : idioma === 'es'
-            ? 'Cambiar Contraseña'
-            : 'Set Password'}
-        </button>
-      </form>
+          <button type="submit" className="boton w-100">
+            {loading
+              ? idioma === 'es'
+                ? 'Cargando...'
+                : 'Loading...'
+              : idioma === 'es'
+              ? 'Cambiar Contraseña'
+              : 'Set Password'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

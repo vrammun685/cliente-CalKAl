@@ -10,16 +10,3 @@
   border: 1px solid #ccc;
   vertical-align: middle;
 }
-
-.btn-navegacion {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
-  background-color: #4CAF87;
-  color: white;
-}
-
-.btn-navegacion:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}

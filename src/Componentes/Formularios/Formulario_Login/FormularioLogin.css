@@ -2,14 +2,3 @@
   height: 100vh;
 }
 
-.boton{
-    background-color: #4CAF87 !important; /* gris por defecto */
-    color: white !important;
-    border: 2px solid #4CAF87 !important;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.boton:hover{
-    background-color: #E4B363 !important; /* gris por defecto */
-    border: 2px solid #E4B363 !important;
-}

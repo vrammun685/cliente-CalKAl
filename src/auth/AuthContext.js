@@ -16,13 +16,19 @@ export function AuthProvider({ children }) {
     try {
       await api.post('/logout/'); // usa el cliente con baseURL ya incluida
     } catch (error) {
-      console.error("Error al cerrar sesión", error);
+      alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
     } finally {
       setIsAuthenticated(false);
     }
   };
 
   useEffect(() => {
+    const loggedOut = localStorage.getItem('loggedOut');
+    if (loggedOut === 'true') {
+      setIsAuthenticated(false);
+      setLoading(false);
+      return;
+    }
     const verifyToken = async () => {
       try {
         await checkToken();
@@ -32,12 +38,10 @@ export function AuthProvider({ children }) {
           const res = await refreshToken();
           if (res.status === 200) {
             setIsAuthenticated(true);
-            console.log("Token renovado desde contexto");
           } else {
             setIsAuthenticated(false);
           }
         } catch (refreshError) {
-          console.error("Error al renovar token desde contexto:", refreshError);
           setIsAuthenticated(false);
         }
       } finally {

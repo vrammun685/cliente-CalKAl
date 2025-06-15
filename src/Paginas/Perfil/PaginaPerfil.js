@@ -25,7 +25,7 @@ export default function PaginaPerfil() {
   }
 
   return (
-    <div className="home">
+    <div className="fondo">
       <MenuPrincipal idioma={idioma} setIdioma={setIdioma} />
       
       {/* Depuración: mostrar todos los datos como JSON */}

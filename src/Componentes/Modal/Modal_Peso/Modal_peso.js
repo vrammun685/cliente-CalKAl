@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import api from "../../../auth/axiosConfig";
 import "./Modal_peso.css";
 
-export default function ModalFormularioPeso({ show, cerrar, pesos, setPesos, pesoEditar, setPesoEditar, idioma }) {
+export default function ModalFormularioPeso({ show, cerrar, setPesos, pesoEditar, setPesoEditar, idioma }) {
   const [fecha, setFecha] = useState("");
   const [peso, setPeso] = useState("");
   const [imagen, setImagen] = useState(null);
@@ -66,13 +66,7 @@ const handleImagenChange = (e) => {
   e.preventDefault();
 
   // Validar si hay errores de imagen o fecha antes de continuar
-  if (errors.imagen) {
-    return;
-  }
-
-  const hoy = new Date().toISOString().split("T")[0];
-  if (fecha > hoy) {
-    setErrors(prev => ({ ...prev, fecha: idioma === "es" ? "La fecha no puede ser futura" : "Date cannot be in the future" }));
+  if (errors) {
     return;
   }
 
@@ -184,10 +178,10 @@ const handleImagenChange = (e) => {
           </div>
 
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={handleCancelar}>
+            <button type="button" className="boton" onClick={handleCancelar}>
               {idioma === "es" ? "Cancelar" : "Cancel"}
             </button>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="boton">
               {pesoEditar ? (idioma === "es" ? "Guardar cambios" : "Save changes") : (idioma === "es" ? "Crear" : "Create")}
             </button>
           </div>

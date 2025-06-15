@@ -42,9 +42,7 @@ export default function AppRouter() {
         <Route path="/perfil" element={<RutaPrivada><PaginaPerfil /></RutaPrivada>} />
         <Route path="/recetas" element={<RutaPrivada><PaginaRecetas /></RutaPrivada>} />
         <Route path="/recetas/crear/:id?" element={<RutaPrivada><PaginaRecetasCrear /></RutaPrivada>} />
-        {/* Rutas privadas
-        <Route path="/datos" element={<RutaPrivada><MostrarDatos /></RutaPrivada>} />
-           */}
+        {/* Rutas privadas*/}
 
         <Route path="/admin" element={<AdminPanel />} />
         {/* Ruta para página no encontrada */}

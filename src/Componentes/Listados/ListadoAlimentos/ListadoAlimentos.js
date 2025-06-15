@@ -65,7 +65,7 @@ export default function ListaAlimentos({ idioma, onAgregar  }) {
       onAgregar(); // la función en el padre recarga todo desde backend
       cerrarModal();
     } catch (error) {
-      console.error('Error al procesar alimento:', error);
+      alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
     } finally {
       setProcesando(false);
     }
@@ -91,7 +91,6 @@ export default function ListaAlimentos({ idioma, onAgregar  }) {
               <tr>
                 <th>{idioma === 'es' ? 'Nombre' : 'Name'}</th>
                 <th>{idioma === 'es' ? 'Calorías' : 'Calories'}</th>
-                <th>{idioma === 'es' ? 'Medida' : 'Measure'}</th>
                 <th>{idioma === 'es' ? 'Proteínas' : 'Proteins'}</th>
                 <th>{idioma === 'es' ? 'Carbohidratos' : 'Carbs'}</th>
                 <th>{idioma === 'es' ? 'Grasas' : 'Fats'}</th>
@@ -103,13 +102,12 @@ export default function ListaAlimentos({ idioma, onAgregar  }) {
                 <tr key={alimento.id || index}>
                   <td>{idioma === 'es' ? alimento.nombre_es : alimento.nombre_en}</td>
                   <td>{alimento.calorias}</td>
-                  <td>100 {alimento.medida}</td>
                   <td>{alimento.proteinas}</td>
                   <td>{alimento.carbohidratos}</td>
                   <td>{alimento.grasas}</td>
                   <td>
                     <button
-                      className="btn btn-dark btn-sm"
+                      className="btn boton btn-sm"
                       onClick={() => abrirModal(alimento)}
                     >
                       {idioma === 'es' ? 'Añadir' : 'Add'}

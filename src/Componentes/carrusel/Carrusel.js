@@ -9,7 +9,7 @@ export default function CarruselDeTarjetas({ idioma }) {
 
   const tarjetas = [
     { texto: idioma === "es" ? "Añade hoy tus Alimentos que vas a consumir" : "Log the foods you're going to eat today", ruta: "/diarios" },
-    { texto: idioma === "es" ? "Registra tus recetas favoritas ahora" : "Save your favorite recipes now", ruta: "/recetas/crear/:id?" },
+    { texto: idioma === "es" ? "Registra tus recetas favoritas ahora" : "Save your favorite recipes now", ruta: "/recetas/crear/" },
     { texto: idioma === "es" ? "Registra tu peso para ver tu progreso" : "Log your weight to track your progress", ruta: "/pesos" }
   ];
 

@@ -45,15 +45,14 @@ export default function ModalAnadirReceta({ mostrar, onClose, onSubmit, receta, 
     try {
       await api.post('/diarios/crearReceta/', payload);
       
-      // ✅ Primero cerrar modal, luego notificar al padre
       onClose();
       setNumPersonas(1);
       setParteDia('Desayuno');
 
-      if (onSubmit) onSubmit(); // Esto recarga los diarios en el padre
+      if (onSubmit) onSubmit(); 
 
     } catch (error) {
-      console.error('Error al añadir receta al diario:', error);
+      alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
     }
   };
 
@@ -116,10 +115,10 @@ export default function ModalAnadirReceta({ mostrar, onClose, onSubmit, receta, 
             </div>
 
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={onClose}>
+              <button type="button" className="boton" onClick={onClose}>
                 {idioma === 'es' ? 'Cancelar' : 'Cancel'}
               </button>
-              <button type="submit" className="btn btn-primary" disabled={procesando}>
+              <button type="submit" className="boton" disabled={procesando}>
                 {idioma === 'es' ? 'Añadir' : 'Add'}
               </button>
             </div>

@@ -1,11 +1,6 @@
 import api from '../../../auth/axiosConfig';
 
-export default function ModalEditarAlimento({
-  idioma,
-  alimento,
-  cerrar,
-  actualizarAlimentoEnLista
-}) {
+export default function ModalEditarAlimento({idioma, alimento,cerrar,actualizarAlimentoEnLista}) {
   if (!alimento) return null;
 
   const handleSubmit = (e) => {
@@ -33,17 +28,15 @@ export default function ModalEditarAlimento({
   };
 
   return (
-    <div className="modal show d-block" tabIndex="-1" role="dialog">
+    <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <form onSubmit={handleSubmit}>
             <div className="modal-header">
               <h5 className="modal-title">
                 {idioma === 'es' ? 'Editar Alimento' : 'Edit Food'}
+                <button type="button" className="btn-close" onClick={cerrar}></button>
               </h5>
-              <button type="button" className="close" onClick={cerrar}>
-                <span>&times;</span>
-              </button>
             </div>
 
             <div className="modal-body">

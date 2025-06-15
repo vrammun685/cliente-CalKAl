@@ -12,7 +12,7 @@ export default function PaginaRecuperarContraseñaCorreo(){
       };
       
     return(
-        <div className='home'>
+        <div className='fondo'>
             <CambioIdioma idioma={idioma} onChangeIdioma={cambiarIdioma} className="cambioIdioma bg-white"/>
             <FormularioPedirEmail idioma={idioma} />
         </div>        

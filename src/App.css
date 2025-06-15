@@ -1,0 +1,21 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+.fondo{
+  background: #08c758;
+  background: radial-gradient(circle,rgba(8, 199, 88, 1) 0%, rgba(76, 175, 135, 1) 48%, rgba(76, 175, 135, 1) 64%, rgba(53, 252, 133, 1) 100%);
+  min-height: 100vh;
+}
+
+.boton{
+    background-color: #4CAF87 !important; /* gris por defecto */
+    color: white !important;
+    border: 2px solid #4CAF87 !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.boton:hover{
+    background-color: #E4B363 !important; /* gris por defecto */
+    border: 2px solid #E4B363 !important;
+}

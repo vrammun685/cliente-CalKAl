@@ -16,7 +16,7 @@ export default function MenuPerfil({ idioma }) {
       await logout();
       redireccion('/login');
     } catch (error) {
-      console.error('Error cerrando sesión:', error);
+      alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
     }
   };
 
@@ -25,10 +25,8 @@ export default function MenuPerfil({ idioma }) {
       try {
         const response = await api.get('/imagenPrefil/');
         const imagen = response.data.foto_perfil;
-        console.log('Respuesta imagen perfil:', response.data);
         setImagenPerfil(imagen || '/media/img/imagenSinPerfil.jpg');
       } catch (error) {
-        console.error('Error al obtener la imagen de perfil:', error);
         setImagenPerfil('/media/img/imagenSinPerfil.jpg');
       }
     };
