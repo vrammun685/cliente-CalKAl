@@ -46,10 +46,13 @@ useEffect(() => {
 
     for (const campo in errors) {
       if (erroresGenerados[campo]) {
-        // Si es un campo que se puede traducir (peso, edad, etc.)
         nuevosErrores[campo] = erroresGenerados[campo];
+      } else if (campo === "imagen") {
+        // Traducción manual del error de imagen
+        nuevosErrores[campo] = idioma === "es"
+          ? "Solo se permiten imágenes en formato PNG o JPG"
+          : "Only PNG or JPG image formats are allowed";
       } else {
-        // Si es un error personalizado como imagen, lo conservamos
         nuevosErrores[campo] = errors[campo];
       }
     }
@@ -100,55 +103,64 @@ const handleImagenChange = (e) => {
 
 
   const validarFormulario = () => {
-  const nuevosErrores = generarMensajesDeError(datosUsuario);
+    const nuevosErrores = generarMensajesDeError(datosUsuario);
 
-  setErrors(prev => ({
-    ...prev,
-    ...nuevosErrores
-  }));
+    // Validación adicional de imagen
+    if (nuevaImagen) {
+      const validTypes = ["image/jpeg", "image/png"];
+      const fileExtension = nuevaImagen.name.substring(nuevaImagen.name.lastIndexOf(".")).toLowerCase();
 
-  return {
-    ...errors,
-    ...nuevosErrores
+      if (!validTypes.includes(nuevaImagen.type) || ![".jpg", ".jpeg", ".png"].includes(fileExtension)) {
+        nuevosErrores.imagen = idioma === "es"
+          ? "Solo se permiten imágenes en formato PNG o JPG"
+          : "Only PNG or JPG image formats are allowed";
+      }
+    }
+
+    setErrors(prev => ({
+      ...prev,
+      ...nuevosErrores,
+    }));
+
+    return {
+      ...errors,
+      ...nuevosErrores,
+    };
   };
-};
 
   const handleGuardar = async () => {
-  const errores = validarFormulario();
+    const errores = validarFormulario();
 
-  // Bloquear envío si hay errores (incluido el de imagen)
-  if (Object.keys(errores).length > 0) {
-    return;
-  }
+    // 🔍 Filtramos los campos que realmente tienen errores válidos
+    const tieneErrores = Object.values(errores).some((error) => error !== null && error !== undefined && error !== "");
 
-  // --- Opcional: asegurar explícitamente que no haya error de imagen ---
-  if (errores.imagen) {
-    return; // Por si acaso
-  }
-
-  const formData = new FormData();
-  for (const key in datosUsuario) {
-    if (datosUsuario[key] !== undefined && datosUsuario[key] !== null) {
-      formData.append(key, datosUsuario[key]);
+    if (tieneErrores) {
+      return;
     }
-  }
-  if (nuevaImagen) {
-    formData.append("imagen_Perfil", nuevaImagen);
-  }
 
-  try {
-    await api.put("/perfil/", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    redireccion('/home');
-  } catch (error) {
-    if (error.response?.data) {
-      setErrors(error.response.data);
-    } else {
-      alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
+    const formData = new FormData();
+    for (const key in datosUsuario) {
+      if (datosUsuario[key] !== undefined && datosUsuario[key] !== null) {
+        formData.append(key, datosUsuario[key]);
+      }
     }
-  }
-};
+    if (nuevaImagen) {
+      formData.append("imagen_Perfil", nuevaImagen);
+    }
+
+    try {
+      await api.put("/perfil/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      redireccion('/home');
+    } catch (error) {
+      if (error.response?.data) {
+        setErrors(error.response.data);
+      } else {
+        alert("Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.");
+      }
+    }
+  };
 
   const handleSolicitarCambioPassword = async (e) => {
     e.preventDefault();

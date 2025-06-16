@@ -35,7 +35,7 @@ export function GraficoCalorias({ consumidas, objetivo }) {
 
       {/* Texto centrado encima del gráfico */}
       <div className="calorias-label position-absolute text-center top-50 start-50 translate-middle">
-        <p className="mb-1 fw-bold">{consumidas} / {objetivo}</p>
+        <p className="mb-1 fw-bold">{consumidas.toFixed(2)} / {objetivo}</p>
         <p className="text-muted small">kcal</p>
       </div>
     </div>

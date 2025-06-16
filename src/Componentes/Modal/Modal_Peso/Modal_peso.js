@@ -66,7 +66,7 @@ const handleImagenChange = (e) => {
   e.preventDefault();
 
   // Validar si hay errores de imagen o fecha antes de continuar
-  if (errors) {
+  if (Object.values(errors).some(error => error)) {
     return;
   }
 
