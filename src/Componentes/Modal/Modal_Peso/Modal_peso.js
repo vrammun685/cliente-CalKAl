@@ -86,13 +86,11 @@ const handleImagenChange = (e) => {
       await api.put(`/pesos/${pesoEditar.id}/`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      alert("✅ Peso actualizado correctamente");
       setPesoEditar(null);
     } else {
       await api.post("/pesos/", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      alert("✅ Peso creado correctamente");
     }
 
     const res = await api.get("/pesos/");
